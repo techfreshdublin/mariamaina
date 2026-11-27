@@ -1,0 +1,2780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>MariaMania: Dublin Street Fighter</title>
+
+  <!-- PWA & Mobile Web App Meta Tags (Portrait Optimized) -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="MariaMania">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#030408">
+  <meta name="application-name" content="MariaMania">
+  <meta name="msapplication-TileColor" content="#030408">
+
+  <!-- Inlined PWA App Icon (SVG) -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='108' fill='%23030408'/%3E%3Cpath d='M256 60 L440 440 L72 440 Z' fill='none' stroke='%23f59e0b' stroke-width='24'/%3E%3Ccircle cx='256' cy='220' r='90' fill='%23fed7aa' stroke='%23ede8dd' stroke-width='22'/%3E%3Ctext x='256' y='360' font-family='sans-serif' font-weight='900' font-size='82' fill='%2338bdf8' text-anchor='middle'%3EMM%3C/text%3E%3C/svg%3E">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='108' fill='%23030408'/%3E%3Ccircle cx='256' cy='220' r='90' fill='%23fed7aa' stroke='%23ede8dd' stroke-width='22'/%3E%3Ctext x='256' y='360' font-family='sans-serif' font-weight='900' font-size='82' fill='%2338bdf8' text-anchor='middle'%3EMM%3C/text%3E%3C/svg%3E">
+
+  <!-- Embedded Web App Manifest: Strictly Portrait Locked -->
+  <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22MariaMania%3A%20Dublin%20Duel%22%2C%22short_name%22%3A%22MariaMania%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22orientation%22%3A%22portrait%22%2C%22background_color%22%3A%22%23030408%22%2C%22theme_color%22%3A%22%23030408%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%2C%253Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%20512%20512'%253E%253Crect%20width%3D'512'%20height%3D'512'%20rx%3D'108'%20fill%3D'%2523030408'%2F%253E%253Ccircle%20cx%3D'256'%20cy%3D'220'%20r%3D'90'%20fill%3D'%2523fed7aa'%20stroke%3D'%2523ede8dd'%20stroke-width%3D'22'%2F%253E%253Ctext%20x%3D'256'%20y%3D'360'%20font-family%3D'sans-serif'%20font-weight%3D'900'%20font-size%3D'82'%20fill%3D'%252338bdf8'%20text-anchor%3D'middle'%253EMM%253C%2Ftext%253E%253C%2Fsvg%253E%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%2C%22purpose%22%3A%22any%20maskable%22%7D%5D%7D">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Modern Cinematic Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Rajdhani:ital,wght@0,600;0,700;1,700&family=Syne:wght@800&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+      box-sizing: border-box;
+    }
+    html, body {
+      background-color: #030408;
+      font-family: 'Rajdhani', sans-serif;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      position: fixed;
+    }
+    .ue-font {
+      font-family: 'Syne', sans-serif;
+    }
+    .ue-glass {
+      background: linear-gradient(135deg, rgba(16, 20, 32, 0.78) 0%, rgba(8, 12, 22, 0.94) 100%);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+    }
+    .touch-pad-btn {
+      touch-action: manipulation;
+      transition: transform 0.08s ease, filter 0.08s ease, background-color 0.08s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .touch-pad-btn:active {
+      transform: scale(0.90);
+      filter: brightness(1.5);
+    }
+    /* Safe-area insets for modern notched screens */
+    .safe-top {
+      padding-top: max(8px, env(safe-area-inset-top));
+    }
+    .safe-bottom {
+      padding-bottom: max(10px, env(safe-area-inset-bottom));
+    }
+  </style>
+</head>
+<body class="bg-[#030408] text-white flex flex-col items-center justify-between h-full w-full">
+
+  <!-- Vertical Top Header (Safe for iPhone Island / Android Punch-hole) -->
+  <header class="w-full max-w-md px-3 safe-top z-20 flex justify-between items-center py-1.5 ue-glass rounded-b-2xl border-t-0 shadow-2xl">
+    <div class="flex items-center space-x-2">
+      <div class="w-2 h-6 bg-gradient-to-b from-amber-400 to-amber-600 rounded-sm shadow-[0_0_12px_#f59e0b]"></div>
+      <div>
+        <div class="flex items-center space-x-1.5">
+          <span class="text-lg font-black ue-font tracking-wide bg-gradient-to-r from-white via-slate-100 to-amber-400 bg-clip-text text-transparent">MARIAMANIA</span>
+          <span class="text-[8px] font-bold px-1.5 py-0.5 rounded-full bg-cyan-950/90 text-cyan-400 border border-cyan-500/50 uppercase tracking-widest shadow-[0_0_8px_rgba(6,182,212,0.4)]">UE5 HD</span>
+        </div>
+        <p class="text-[9px] text-slate-400 font-semibold leading-none">DUBLIN DUEL • 3 ROUNDS</p>
+      </div>
+    </div>
+    <div class="flex items-center space-x-1.5">
+      <!-- Custom Background Photo Uploader -->
+      <label for="bg-file-input" class="cursor-pointer flex items-center gap-1 px-2 py-1 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-extrabold text-[10px] shadow-[0_0_12px_rgba(16,185,129,0.5)] active:scale-95 transition-all">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+        <span>Upload BG</span>
+      </label>
+      <input type="file" id="bg-file-input" accept="image/*" class="hidden">
+
+      <span id="round-indicator" class="text-[11px] font-extrabold text-amber-400 tracking-wider px-2 py-1 rounded-lg bg-amber-950/50 border border-amber-500/40">RND 1/3</span>
+      <!-- BGM Music Toggle Button -->
+      <button id="bgm-toggle-btn" class="flex items-center justify-center w-7 h-7 rounded-xl bg-slate-800/90 text-amber-400 border border-amber-400/40 text-xs shadow-[0_0_8px_rgba(245,158,11,0.3)] active:scale-95 transition-all" title="Toggle Music">
+        🎵
+      </button>
+      <button id="pwa-install-btn" class="flex items-center gap-1 px-2.5 py-1 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-extrabold text-[10px] shadow-[0_0_12px_rgba(6,182,212,0.5)] active:scale-95 transition-all">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <span>Install</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- High-Intensity Vertical Canvas (9:16 Ultra Viewport) -->
+  <main class="relative w-full max-w-md flex-1 flex items-center justify-center overflow-hidden px-1 py-1">
+    <div class="relative w-full h-full rounded-2xl overflow-hidden border border-slate-700/60 bg-gradient-to-b from-slate-950 via-slate-900 to-black shadow-[0_0_35px_rgba(0,0,0,0.9)]">
+      <canvas id="gameCanvas" class="w-full h-full block"></canvas>
+
+      <!-- Broadcast Announcer Overlay -->
+      <div id="announce-box" class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-20">
+        <h1 id="announce-main" class="ue-font text-5xl font-extrabold tracking-tight text-white drop-shadow-[0_10px_25px_rgba(0,0,0,0.95)] opacity-0 transition-all duration-300 transform scale-95 text-center"></h1>
+        <h2 id="announce-sub" class="mt-2 text-sm font-bold tracking-[0.2em] text-amber-400 drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)] opacity-0 transition-all duration-300 uppercase text-center px-4"></h2>
+      </div>
+
+      <!-- Quick Audio Hint -->
+      <div id="audio-start-prompt" class="absolute bottom-2 inset-x-2 z-20 text-[10px] text-slate-300 ue-glass px-2.5 py-1 rounded-lg border border-cyan-500/40 flex items-center justify-center gap-1.5 pointer-events-none text-center">
+        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+        Tap any button for spatial sound effects & "HOISHT!" audio
+      </div>
+
+      <!-- Cinematic Intro Start Screen Overlay -->
+      <div id="intro-start-screen" class="absolute inset-0 z-40 bg-gradient-to-b from-black/95 via-slate-950/90 to-black/95 backdrop-blur-md flex flex-col items-center justify-between p-6 text-center select-none transition-opacity duration-500">
+        <!-- Top Title & Badge -->
+        <div class="pt-3">
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/40 text-amber-400 text-[10px] font-bold tracking-widest uppercase mb-2 shadow-[0_0_12px_rgba(245,158,11,0.25)]">
+            <span>⚔️</span> DUBLIN QUAY SHOWDOWN • 3 ROUNDS MAX
+          </div>
+          <h1 class="ue-font text-4xl sm:text-5xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-white via-amber-200 to-amber-500 drop-shadow-[0_4px_20px_rgba(245,158,11,0.6)]">
+            MARIAMANIA
+          </h1>
+          <p class="text-[11px] font-bold tracking-[0.3em] text-cyan-400 mt-1 uppercase">The Barrister vs. An Garda Síochána</p>
+        </div>
+
+        <!-- Fighter VS Showcase Cards -->
+        <div class="w-full flex items-center justify-center gap-3 my-auto py-2">
+          <!-- Maria Card -->
+          <div class="flex-1 ue-glass rounded-2xl p-3 border border-cyan-500/40 flex flex-col items-center shadow-[0_0_20px_rgba(6,182,212,0.25)]">
+            <div class="w-16 h-16 rounded-full bg-gradient-to-br from-cyan-400 to-blue-700 p-0.5 shadow-lg relative">
+              <div class="w-full h-full rounded-full bg-slate-900 flex items-center justify-center text-2xl overflow-hidden">
+                ⚖️
+              </div>
+              <span class="absolute -bottom-1 -right-1 text-[9px] font-black bg-cyan-500 text-black px-1.5 py-0.5 rounded-full">P1</span>
+            </div>
+            <h3 class="ue-font text-sm font-extrabold text-white mt-2">MARIA</h3>
+            <p class="text-[9px] text-cyan-300 font-semibold">The Barrister</p>
+            <div class="mt-2 text-[8px] bg-slate-800/80 px-2 py-0.5 rounded text-amber-300 font-bold border border-amber-500/30">
+              Shouts "HOISHT!"
+            </div>
+          </div>
+
+          <div class="ue-font text-2xl font-black text-amber-400 drop-shadow-[0_0_12px_#f59e0b] px-1">
+            VS
+          </div>
+
+          <!-- Garda Kelly Card -->
+          <div class="flex-1 ue-glass rounded-2xl p-3 border border-amber-500/40 flex flex-col items-center shadow-[0_0_20px_rgba(245,158,11,0.25)]">
+            <div class="w-16 h-16 rounded-full bg-gradient-to-br from-amber-400 to-yellow-600 p-0.5 shadow-lg relative">
+              <div class="w-full h-full rounded-full bg-slate-900 flex items-center justify-center text-2xl overflow-hidden">
+                🚔
+              </div>
+              <span class="absolute -bottom-1 -right-1 text-[9px] font-black bg-amber-400 text-black px-1.5 py-0.5 rounded-full">CPU</span>
+            </div>
+            <h3 class="ue-font text-sm font-extrabold text-white mt-2">GARDA KELLY</h3>
+            <p class="text-[9px] text-amber-300 font-semibold">An Garda Síochána</p>
+            <div class="mt-2 text-[8px] bg-slate-800/80 px-2 py-0.5 rounded text-cyan-300 font-bold border border-cyan-500/30">
+              Patrol & Beacon
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Controls Summary & Big Start Button -->
+        <div class="w-full max-w-xs pb-3 flex flex-col items-center gap-3">
+          <div class="text-[10px] text-slate-400 leading-snug">
+            Featuring the <strong class="text-white">White Dacia Sandero</strong> & Dublin City Arena
+          </div>
+
+          <!-- Pulsing Start Button -->
+          <button id="btn-start-game" class="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-amber-500 via-orange-500 to-rose-600 text-white font-black text-base tracking-widest ue-font uppercase shadow-[0_0_25px_rgba(245,158,11,0.7)] active:scale-95 transition-all transform animate-pulse border border-amber-300/40">
+            START FIGHT ⚔️
+          </button>
+
+          <p class="text-[9px] text-slate-500">Tap anywhere or press Enter to launch with Arcade BGM</p>
+        </div>
+      </div>
+
+      <!-- iOS Install Guidance Modal -->
+      <div id="ios-guide-modal" class="absolute inset-0 bg-black/90 backdrop-blur-md z-30 flex items-center justify-center p-5 hidden">
+        <div class="ue-glass max-w-xs w-full p-4 rounded-2xl border border-cyan-500/40 text-center shadow-2xl">
+          <div class="w-10 h-10 mx-auto rounded-xl bg-cyan-500/20 flex items-center justify-center text-cyan-400 mb-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+          </div>
+          <h3 class="ue-font text-base font-bold text-white">Install on iPhone / iPad</h3>
+          <p class="text-xs text-slate-300 mt-2 leading-relaxed">
+            1. Tap the <strong class="text-amber-400">Share</strong> icon in Safari's bottom toolbar.<br>
+            2. Scroll down and tap <strong class="text-cyan-400">"Add to Home Screen"</strong>.<br>
+            3. Tap <strong class="text-white">"Add"</strong> for full-screen portrait play!
+          </p>
+          <button id="ios-guide-close" class="mt-3 px-4 py-2 w-full rounded-xl bg-slate-800 text-white font-bold text-xs border border-slate-600">Got it</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Ergonomic Vertical Mobile Controls (Bottom-Clustered for Easy Dual-Thumb Play) -->
+  <footer class="w-full max-w-md px-3 safe-bottom z-20 flex justify-between items-center select-none pt-1">
+    <!-- Precision Thumb D-Pad -->
+    <div class="grid grid-cols-3 gap-1.5 w-36 h-28">
+      <div></div>
+      <button id="btn-up" class="touch-pad-btn ue-glass rounded-xl flex items-center justify-center text-cyan-400 font-extrabold text-lg border border-slate-600/60 shadow-lg">▲</button>
+      <div></div>
+      <button id="btn-left" class="touch-pad-btn ue-glass rounded-xl flex items-center justify-center text-cyan-400 font-extrabold text-lg border border-slate-600/60 shadow-lg">◀</button>
+      <button id="btn-down" class="touch-pad-btn ue-glass rounded-xl flex items-center justify-center text-cyan-400 font-extrabold text-lg border border-slate-600/60 shadow-lg">▼</button>
+      <button id="btn-right" class="touch-pad-btn ue-glass rounded-xl flex items-center justify-center text-cyan-400 font-extrabold text-lg border border-slate-600/60 shadow-lg">▶</button>
+    </div>
+
+    <!-- Dynamic Action Cluster -->
+    <div class="flex items-center space-x-2">
+      <!-- Light Gavel Strike -->
+      <button id="btn-punch" class="touch-pad-btn w-12 h-20 rounded-2xl bg-gradient-to-b from-rose-500/90 to-red-950/95 border border-rose-400/50 shadow-[0_4px_18px_rgba(244,63,94,0.4)] flex flex-col items-center justify-center text-white">
+        <span class="text-xs font-black tracking-wider">HIT</span>
+        <span class="text-[8px] text-rose-200">Gavel</span>
+      </button>
+
+      <!-- Heavy Heel Kick -->
+      <button id="btn-kick" class="touch-pad-btn w-12 h-20 rounded-2xl bg-gradient-to-b from-amber-500/90 to-amber-950/95 border border-amber-400/50 shadow-[0_4px_18px_rgba(245,158,11,0.4)] flex flex-col items-center justify-center text-white">
+        <span class="text-xs font-black tracking-wider">KICK</span>
+        <span class="text-[8px] text-amber-200">Heavy</span>
+      </button>
+
+      <!-- Legal Writ EX Art -->
+      <button id="btn-special" class="touch-pad-btn w-14 h-22 rounded-2xl bg-gradient-to-b from-cyan-400/95 via-sky-600 to-blue-950/95 border border-cyan-300/60 shadow-[0_4px_22px_rgba(6,182,212,0.55)] flex flex-col items-center justify-center text-white">
+        <span class="text-sm font-black tracking-wider">EX</span>
+        <span class="text-[8px] text-cyan-200 font-bold">Writ</span>
+      </button>
+    </div>
+  </footer>
+
+  <script>
+    /* =================================================================
+       SPATIAL AUDIO ENGINE & VOCAL SHOUT SYNTHESIS
+       ================================================================= */
+    class ModernAudioEngine {
+      constructor() {
+        this.ctx = null;
+        this.initialized = false;
+        this.musicPlaying = false;
+        this.musicTimer = null;
+        this.musicStep = 0;
+        this.musicMuted = false;
+        this.musicGain = null;
+      }
+
+      init() {
+        if (this.initialized) return;
+        try {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AudioContext();
+          if (this.ctx.state === 'suspended') {
+            this.ctx.resume();
+          }
+          this.musicGain = this.ctx.createGain();
+          this.musicGain.gain.setValueAtTime(0.22, this.ctx.currentTime);
+          this.musicGain.connect(this.ctx.destination);
+          this.initialized = true;
+          const prompt = document.getElementById('audio-start-prompt');
+          if (prompt) prompt.style.display = 'none';
+        } catch (e) {
+          console.warn('Audio Init Error:', e);
+        }
+      }
+
+      // Synthesized Arcade Fighting BGM Engine (Driving synth bass, arpeggios, and beat)
+      startBGM() {
+        if (!this.initialized || !this.ctx || this.musicPlaying) return;
+        this.musicPlaying = true;
+        this.musicStep = 0;
+
+        // Bass scale notes (frequencies in Hz): D-minor combat progression
+        const bassLine = [146.83, 146.83, 174.61, 146.83, 130.81, 130.81, 164.81, 130.81]; // D3, F3, C3, E3
+        const leadArp = [587.33, 698.46, 880.00, 1046.50, 880.00, 698.46, 783.99, 659.25]; // D5, F5, A5, C6...
+
+        const stepTime = 135; // ~133 BPM high adrenaline fighting rhythm
+
+        const playStep = () => {
+          if (!this.musicPlaying || !this.ctx || this.musicMuted) {
+            this.musicTimer = setTimeout(playStep, stepTime);
+            return;
+          }
+
+          const now = this.ctx.currentTime;
+          const step = this.musicStep % 16;
+          this.musicStep++;
+
+          // 1. Kick / Snare percussion synthesis
+          if (step % 4 === 0) {
+            // Punchy Electro Kick
+            const kickOsc = this.ctx.createOscillator();
+            const kickGain = this.ctx.createGain();
+            kickOsc.frequency.setValueAtTime(130, now);
+            kickOsc.frequency.exponentialRampToValueAtTime(32, now + 0.12);
+            kickGain.gain.setValueAtTime(0.4, now);
+            kickGain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+            kickOsc.connect(kickGain);
+            kickGain.connect(this.musicGain);
+            kickOsc.start(now);
+            kickOsc.stop(now + 0.13);
+          } else if (step % 4 === 2) {
+            // Snare / Clap
+            const snareNoise = this.ctx.createBuffer(1, this.ctx.sampleRate * 0.08, this.ctx.sampleRate);
+            const data = snareNoise.getChannelData(0);
+            for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
+            const noiseSrc = this.ctx.createBufferSource();
+            noiseSrc.buffer = snareNoise;
+            const snareFilter = this.ctx.createBiquadFilter();
+            snareFilter.type = 'highpass';
+            snareFilter.frequency.setValueAtTime(1200, now);
+            const snareGain = this.ctx.createGain();
+            snareGain.gain.setValueAtTime(0.2, now);
+            snareGain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+            noiseSrc.connect(snareFilter);
+            snareFilter.connect(snareGain);
+            snareGain.connect(this.musicGain);
+            noiseSrc.start(now);
+            noiseSrc.stop(now + 0.09);
+          }
+
+          // 2. Synthesizer Bassline
+          const bassFreq = bassLine[Math.floor(step / 2) % bassLine.length];
+          const bassOsc = this.ctx.createOscillator();
+          const bassGain = this.ctx.createGain();
+          bassOsc.type = 'sawtooth';
+          bassOsc.frequency.setValueAtTime(bassFreq, now);
+          bassGain.gain.setValueAtTime(0.22, now);
+          bassGain.gain.exponentialRampToValueAtTime(0.01, now + 0.11);
+          bassOsc.connect(bassGain);
+          bassGain.connect(this.musicGain);
+          bassOsc.start(now);
+          bassOsc.stop(now + 0.12);
+
+          // 3. Arpeggiated Lead Synth
+          const leadFreq = leadArp[step % leadArp.length];
+          const leadOsc = this.ctx.createOscillator();
+          const leadGain = this.ctx.createGain();
+          leadOsc.type = 'triangle';
+          leadOsc.frequency.setValueAtTime(leadFreq, now);
+          leadGain.gain.setValueAtTime(0.12, now);
+          leadGain.gain.exponentialRampToValueAtTime(0.005, now + 0.09);
+          leadOsc.connect(leadGain);
+          leadGain.connect(this.musicGain);
+          leadOsc.start(now);
+          leadOsc.stop(now + 0.1);
+
+          this.musicTimer = setTimeout(playStep, stepTime);
+        };
+
+        playStep();
+      }
+
+      toggleMusic() {
+        this.musicMuted = !this.musicMuted;
+        if (this.musicGain) {
+          this.musicGain.gain.setValueAtTime(this.musicMuted ? 0 : 0.22, this.ctx.currentTime);
+        }
+        return !this.musicMuted;
+      }
+
+      playHitImpact(isHeavy = false) {
+        if (!this.initialized || !this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = isHeavy ? 'triangle' : 'sine';
+        osc.frequency.setValueAtTime(isHeavy ? 140 : 180, now);
+        osc.frequency.exponentialRampToValueAtTime(35, now + (isHeavy ? 0.25 : 0.15));
+        gain.gain.setValueAtTime(isHeavy ? 0.6 : 0.4, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + (isHeavy ? 0.25 : 0.15));
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.26);
+      }
+
+      // Maria's Authentic Dublin Shout: "HOISHT!"
+      playHoishtVoice() {
+        if (!this.initialized || !this.ctx) return;
+        const now = this.ctx.currentTime;
+
+        // Formant filter for vocal resonance ("Hoi-")
+        const osc1 = this.ctx.createOscillator();
+        const osc2 = this.ctx.createOscillator();
+        const formantFilter = this.ctx.createBiquadFilter();
+        const gain = this.ctx.createGain();
+
+        osc1.type = 'sawtooth';
+        osc2.type = 'triangle';
+        osc1.frequency.setValueAtTime(460, now);
+        osc1.frequency.exponentialRampToValueAtTime(310, now + 0.15);
+        osc2.frequency.setValueAtTime(920, now);
+        osc2.frequency.exponentialRampToValueAtTime(620, now + 0.15);
+
+        formantFilter.type = 'bandpass';
+        formantFilter.frequency.setValueAtTime(1100, now);
+        formantFilter.Q.setValueAtTime(3.0, now);
+
+        gain.gain.setValueAtTime(0.5, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.16);
+
+        osc1.connect(formantFilter);
+        osc2.connect(formantFilter);
+        formantFilter.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc1.start(now);
+        osc2.start(now);
+        osc1.stop(now + 0.17);
+        osc2.stop(now + 0.17);
+
+        // Crisp sibilant friction ("-sht!")
+        const bufferSize = this.ctx.sampleRate * 0.13;
+        const noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+        const output = noiseBuffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) output[i] = Math.random() * 2 - 1;
+
+        const noise = this.ctx.createBufferSource();
+        noise.buffer = noiseBuffer;
+        const noiseFilter = this.ctx.createBiquadFilter();
+        noiseFilter.type = 'bandpass';
+        noiseFilter.frequency.setValueAtTime(3600, now + 0.05);
+        noiseFilter.Q.setValueAtTime(3.5, now + 0.05);
+
+        const noiseGain = this.ctx.createGain();
+        noiseGain.gain.setValueAtTime(0.001, now);
+        noiseGain.gain.setValueAtTime(0.55, now + 0.05);
+        noiseGain.gain.exponentialRampToValueAtTime(0.01, now + 0.19);
+
+        noise.connect(noiseFilter);
+        noiseFilter.connect(noiseGain);
+        noiseGain.connect(this.ctx.destination);
+
+        noise.start(now + 0.05);
+        noise.stop(now + 0.2);
+      }
+
+      playSpecialSFX() {
+        if (!this.initialized || !this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(250, now);
+        osc.frequency.exponentialRampToValueAtTime(1600, now + 0.35);
+        gain.gain.setValueAtTime(0.35, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.36);
+      }
+
+      playRoundChime() {
+        if (!this.initialized || !this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(523.25, now);
+        osc.frequency.setValueAtTime(659.25, now + 0.15);
+        gain.gain.setValueAtTime(0.4, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 1.2);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 1.25);
+      }
+    }
+
+    const audio = new ModernAudioEngine();
+
+    // Haptic feedback trigger for supported Android/iOS devices
+    function triggerHaptic(type = 'light') {
+      if ('vibrate' in navigator) {
+        if (type === 'heavy') navigator.vibrate([25, 40, 20]);
+        else navigator.vibrate(12);
+      }
+    }
+
+    /* =================================================================
+       CANVAS & RENDERING SETUP (Vertical 9:16 Ultra Resolution)
+       ================================================================= */
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // High-definition vertical aspect ratio (1080 x 1920)
+    const V_WIDTH = 1080;
+    const V_HEIGHT = 1920;
+    const FLOOR_Y = 1530;
+
+    let cameraShake = 0;
+    function triggerShake(magnitude = 12) {
+      cameraShake = magnitude;
+    }
+
+    function resizeCanvas() {
+      canvas.width = V_WIDTH;
+      canvas.height = V_HEIGHT;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    // Background Image Loader with Resilient Fallback & Local Storage
+    let customBgImage = null;
+    let bgReady = false;
+
+    function loadCustomBackground(src) {
+      const img = new Image();
+      img.onload = () => {
+        customBgImage = img;
+        bgReady = true;
+      };
+      img.src = src;
+    }
+
+    // Check localStorage for previously saved custom background
+    try {
+      const savedBg = localStorage.getItem('mariamania_custom_bg');
+      if (savedBg) {
+        loadCustomBackground(savedBg);
+      }
+    } catch (e) {
+      console.warn('LocalStorage error:', e);
+    }
+
+    // File Input Handler for Custom BG
+    const bgFileInput = document.getElementById('bg-file-input');
+    if (bgFileInput) {
+      bgFileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          const dataUrl = event.target.result;
+          loadCustomBackground(dataUrl);
+          try {
+            localStorage.setItem('mariamania_custom_bg', dataUrl);
+          } catch (err) {
+            console.warn('Image too large for localStorage, will stay active in memory.');
+          }
+          setAnnouncement('BG UPDATED!', 'CUSTOM DUBLIN ARENA LOADED');
+          setTimeout(() => setAnnouncement('', '', false), 2500);
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    // Dynamic Weather: Dublin Rain Particles
+    const rainDrops = [];
+    for (let r = 0; r < 90; r++) {
+      rainDrops.push({
+        x: Math.random() * V_WIDTH,
+        y: Math.random() * V_HEIGHT,
+        length: 18 + Math.random() * 22,
+        speed: 28 + Math.random() * 18,
+        alpha: 0.2 + Math.random() * 0.35
+      });
+    }
+
+    // Visual FX pools
+    const hitSparks = [];
+    const energyProjectiles = [];
+    const cinematicVocalShouts = [];
+
+    function addHitBurst(x, y, color = '#38bdf8', count = 28) {
+      for (let i = 0; i < count; i++) {
+        const ang = Math.random() * Math.PI * 2;
+        const speed = 5 + Math.random() * 16;
+        hitSparks.push({
+          x: x,
+          y: y,
+          vx: Math.cos(ang) * speed,
+          vy: Math.sin(ang) * speed - 2.5,
+          radius: 2 + Math.random() * 6,
+          alpha: 1.0,
+          decay: 0.025 + Math.random() * 0.035,
+          color: color
+        });
+      }
+    }
+
+    function addHoishtShoutFX(x, y) {
+      cinematicVocalShouts.push({
+        x: x,
+        y: y,
+        text: 'HOISHT!',
+        scale: 0.5,
+        targetScale: 1.6,
+        alpha: 1.0,
+        decay: 0.018,
+        rotation: (Math.random() - 0.5) * 0.3
+      });
+      audio.playHoishtVoice();
+      triggerShake(12);
+      triggerHaptic('heavy');
+    }
+
+    /* =================================================================
+       PROJECTILE CLASS (High Court Injunction vs. Garda Pulse Beacon)
+       ================================================================= */
+    class ModernProjectile {
+      constructor(owner, x, y, dir, type) {
+        this.owner = owner;
+        this.x = x;
+        this.y = y;
+        this.dir = dir;
+        this.type = type;
+        this.width = 75;
+        this.height = 48;
+        this.vx = 22 * dir;
+        this.active = true;
+      }
+
+      update() {
+        this.x += this.vx;
+        if (this.x < -140 || this.x > V_WIDTH + 140) this.active = false;
+      }
+
+      draw(c) {
+        c.save();
+        c.translate(this.x, this.y);
+        c.scale(this.dir, 1);
+
+        if (this.type === 'writ') {
+          // Gilded legal writ with ethereal bloom
+          c.shadowColor = '#38bdf8';
+          c.shadowBlur = 35;
+          c.fillStyle = '#ffffff';
+          c.beginPath();
+          c.roundRect(-30, -20, 60, 40, 8);
+          c.fill();
+
+          c.fillStyle = '#0284c7';
+          c.fillRect(-20, -10, 40, 3.5);
+          c.fillRect(-20, -1, 34, 3.5);
+          c.fillRect(-20, 8, 26, 3.5);
+
+          // Golden Wax Seal
+          c.fillStyle = '#f59e0b';
+          c.beginPath();
+          c.arc(16, 0, 11, 0, Math.PI * 2);
+          c.fill();
+        } else {
+          // Garda Tactical Pulse Wave
+          c.shadowColor = '#3b82f6';
+          c.shadowBlur = 40;
+          const radial = c.createRadialGradient(0, 0, 4, 0, 0, 32);
+          radial.addColorStop(0, '#ffffff');
+          radial.addColorStop(0.35, '#38bdf8');
+          radial.addColorStop(0.8, '#1d4ed8');
+          radial.addColorStop(1, 'rgba(29, 78, 216, 0)');
+          c.fillStyle = radial;
+          c.beginPath();
+          c.arc(0, 0, 32, 0, Math.PI * 2);
+          c.fill();
+        }
+        c.restore();
+      }
+    }
+
+    /* =================================================================
+       FIGHTER ENTITY (Subsurface Shading, Realistic Physics, PBR)
+       ================================================================= */
+    class UE5Fighter {
+      constructor(isPlayer, name, startX) {
+        this.isPlayer = isPlayer;
+        this.name = name;
+        this.reset(startX);
+      }
+
+      reset(x) {
+        this.x = x;
+        this.y = FLOOR_Y;
+        this.vx = 0;
+        this.vy = 0;
+        this.width = 110;
+        this.height = 280; // Scaled up for vertical HD clarity
+        this.hp = 100;
+        this.maxHp = 100;
+        this.energy = 50;
+        this.isGrounded = true;
+        this.isBlocking = false;
+        this.facing = this.isPlayer ? 1 : -1;
+        this.state = 'idle';
+        this.stateTimer = 0;
+        this.attackHitDone = false;
+      }
+
+      receiveDamage(amount, isHeavy = false) {
+        if (this.isBlocking) {
+          amount *= 0.25;
+          this.energy = Math.min(100, this.energy + 8);
+          addHitBurst(this.x, this.y - 150, '#38bdf8', 16);
+        } else {
+          this.state = 'hurt';
+          this.stateTimer = 18;
+          this.energy = Math.min(100, this.energy + 15);
+          triggerShake(isHeavy ? 16 : 8);
+        }
+        this.hp = Math.max(0, this.hp - amount);
+
+        // When Maria hits the Garda: shout "HOISHT!"
+        if (!this.isPlayer) {
+          addHoishtShoutFX(this.x, this.y - 230);
+        }
+      }
+
+      triggerSpecial() {
+        if (this.energy < 30) return;
+        this.energy -= 30;
+        this.state = 'special';
+        this.stateTimer = 30;
+        this.attackHitDone = true;
+        audio.playSpecialSFX();
+        triggerHaptic('light');
+
+        const spawnX = this.x + 65 * this.facing;
+        const spawnY = this.y - 170;
+        const type = this.isPlayer ? 'writ' : 'beacon';
+        energyProjectiles.push(new ModernProjectile(this, spawnX, spawnY, this.facing, type));
+      }
+
+      update(opponent) {
+        // AI Logic for Garda Opponent
+        if (!this.isPlayer && gameState === 'FIGHT') {
+          const dist = Math.abs(opponent.x - this.x);
+          if (this.state === 'idle' || this.state === 'walk') {
+            if (dist > 300) {
+              this.vx = -5.0 * this.facing;
+              this.state = 'walk';
+            } else if (dist < 140) {
+              this.vx = 4.0 * this.facing;
+              this.state = 'walk';
+            } else {
+              this.vx = 0;
+              this.state = 'idle';
+              const rand = Math.random();
+              if (rand < 0.040) {
+                this.state = 'punch';
+                this.stateTimer = 18;
+                this.attackHitDone = false;
+                audio.playHitImpact(false);
+              } else if (rand < 0.070) {
+                this.state = 'kick';
+                this.stateTimer = 24;
+                this.attackHitDone = false;
+                audio.playHitImpact(true);
+              } else if (rand < 0.088 && this.energy >= 30) {
+                this.triggerSpecial();
+              }
+            }
+          }
+        }
+
+        // Physics Integration
+        this.x += this.vx;
+        this.y += this.vy;
+
+        if (!this.isGrounded) {
+          this.vy += 1.35; // Snappy vertical gravity
+        }
+
+        if (this.y >= FLOOR_Y) {
+          this.y = FLOOR_Y;
+          this.vy = 0;
+          this.isGrounded = true;
+          if (this.state === 'jump') this.state = 'idle';
+        } else {
+          this.isGrounded = false;
+        }
+
+        this.facing = opponent.x > this.x ? 1 : -1;
+        this.x = Math.max(140, Math.min(V_WIDTH - 140, this.x));
+
+        // State Timer & Hit Detection
+        if (this.hp <= 0) {
+          this.state = 'ko_down';
+          this.vx = 0;
+          return;
+        }
+
+        if (this.stateTimer > 0) {
+          this.stateTimer--;
+
+          if (['punch', 'kick'].includes(this.state) && !this.attackHitDone && this.stateTimer < 14) {
+            const range = this.state === 'kick' ? 210 : 160;
+            const dist = Math.abs(opponent.x - this.x);
+            const inFront = (this.facing === 1 && opponent.x > this.x) || (this.facing === -1 && opponent.x < this.x);
+
+            if (dist < range && inFront && Math.abs(opponent.y - this.y) < 110) {
+              this.attackHitDone = true;
+              const isHeavy = this.state === 'kick';
+              const dmg = isHeavy ? 14 : 9;
+              opponent.receiveDamage(dmg, isHeavy);
+              addHitBurst(opponent.x, opponent.y - 180, isHeavy ? '#f59e0b' : '#38bdf8', 30);
+            }
+          }
+
+          if (this.stateTimer <= 0) {
+            this.state = 'idle';
+            this.attackHitDone = false;
+          }
+        } else if (this.isGrounded && this.state !== 'crouch') {
+          this.vx *= 0.65;
+          if (Math.abs(this.vx) < 0.2) this.state = 'idle';
+        }
+      }
+
+      draw(c) {
+        c.save();
+        c.translate(this.x, this.y);
+        c.scale(this.facing * 1.35, 1.35); // 1.35x Scale for intense portrait visuals
+
+        // Ambient Occlusion Contact Shadow
+        const shadowGrad = c.createRadialGradient(0, 0, 5, 0, 0, 75);
+        shadowGrad.addColorStop(0, 'rgba(0, 0, 0, 0.85)');
+        shadowGrad.addColorStop(0.4, 'rgba(0, 0, 0, 0.5)');
+        shadowGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+        c.fillStyle = shadowGrad;
+        c.beginPath();
+        c.ellipse(0, 0, 75, 20, 0, 0, Math.PI * 2);
+        c.fill();
+
+        if (this.isPlayer) {
+          this.renderMariaPBR(c);
+        } else {
+          this.renderGardaPBR(c);
+        }
+        c.restore();
+      }
+
+      /* -------------------------------------------------------------
+         BATTERED / DEFEATED DOWN RENDERERS
+         ------------------------------------------------------------- */
+      renderBatteredMaria(c) {
+        // Maria collapsed prone and battered on the wet Dublin asphalt
+        const t = Date.now() / 300;
+
+        // Scuffed courtroom silk robe sprawled along the ground
+        const robeGrad = c.createLinearGradient(-100, -10, 80, 0);
+        robeGrad.addColorStop(0, '#0a0d14');
+        robeGrad.addColorStop(0.5, '#1e2330');
+        robeGrad.addColorStop(1, '#05070a');
+        c.fillStyle = robeGrad;
+        c.beginPath();
+        c.moveTo(-90, -10);
+        c.quadraticCurveTo(-40, -42, 35, -28);
+        c.lineTo(75, -8);
+        c.lineTo(70, -2);
+        c.lineTo(-90, -2);
+        c.closePath();
+        c.fill();
+
+        // Floral Dress Underlay peeking out crumpled & torn
+        c.fillStyle = '#0f172a';
+        c.beginPath();
+        c.roundRect(-25, -34, 48, 24, 4);
+        c.fill();
+        c.fillStyle = '#f43f5e';
+        c.beginPath();
+        c.arc(-8, -24, 3, 0, Math.PI * 2);
+        c.arc(12, -22, 2.5, 0, Math.PI * 2);
+        c.fill();
+
+        // Disheveled White Bib Bands (Jabot) crumpled on road
+        c.fillStyle = '#e2e8f0';
+        c.beginPath();
+        c.roundRect(-42, -26, 20, 16, 2);
+        c.roundRect(-30, -22, 18, 14, 2);
+        c.fill();
+        // Mud/Scuff stains on collar
+        c.fillStyle = 'rgba(78, 53, 36, 0.55)';
+        c.fillRect(-38, -20, 8, 4);
+
+        // Torso / Arm limp on ground
+        c.fillStyle = '#fde2d4';
+        c.beginPath();
+        c.arc(42, -12, 9, 0, Math.PI * 2); // Limp hand
+        c.fill();
+
+        // Fallen Gavel resting on asphalt
+        c.fillStyle = '#78350f';
+        c.fillRect(52, -18, 22, 10);
+        c.fillStyle = '#b45309';
+        c.fillRect(44, -15, 14, 4);
+        c.fillStyle = '#f59e0b';
+        c.fillRect(52, -18, 4, 10);
+        c.fillRect(70, -18, 4, 10);
+
+        // Slumped Head on Pavement
+        c.fillStyle = '#fde2d4';
+        c.beginPath();
+        c.ellipse(-56, -20, 20, 18, -0.2, 0, Math.PI * 2);
+        c.fill();
+
+        // Bruise / Scuff mark on cheek
+        c.fillStyle = 'rgba(190, 24, 93, 0.45)';
+        c.beginPath();
+        c.ellipse(-58, -18, 6, 4, 0.3, 0, Math.PI * 2);
+        c.fill();
+
+        // Closed "KO" Eyes (X _ X)
+        c.strokeStyle = '#371804';
+        c.lineWidth = 2.2;
+        c.beginPath();
+        c.moveTo(-64, -24); c.lineTo(-58, -18);
+        c.moveTo(-58, -24); c.lineTo(-64, -18);
+        c.moveTo(-52, -24); c.lineTo(-46, -18);
+        c.moveTo(-46, -24); c.lineTo(-52, -18);
+        c.stroke();
+
+        // Brunette hair strewn on wet road
+        c.fillStyle = '#592408';
+        c.beginPath();
+        c.moveTo(-60, -12);
+        c.quadraticCurveTo(-85, -5, -110, -2);
+        c.quadraticCurveTo(-85, -18, -68, -26);
+        c.closePath();
+        c.fill();
+
+        // Dislodged Horsehair Barrister Wig tilted on ground
+        c.fillStyle = '#f1f5f9';
+        c.strokeStyle = '#94a3b8';
+        c.lineWidth = 1.2;
+        c.beginPath();
+        c.ellipse(-72, -30, 22, 14, -0.4, 0, Math.PI * 2);
+        c.fill();
+        c.stroke();
+        // Coils unraveling
+        for (let i = 0; i < 4; i++) {
+          c.beginPath();
+          c.arc(-82 + i * 7, -30, 4.5, 0, Math.PI * 2);
+          c.stroke();
+        }
+
+        // Battered Cartoon Dazed Stars / Birdies Orbiting Head
+        for (let s = 0; s < 3; s++) {
+          const ang = t * 2 + (s * (Math.PI * 2) / 3);
+          const starX = -56 + Math.cos(ang) * 26;
+          const starY = -52 + Math.sin(ang) * 10;
+          c.fillStyle = '#facc15';
+          c.shadowColor = '#f59e0b';
+          c.shadowBlur = 8;
+          c.beginPath();
+          c.arc(starX, starY, 3.5, 0, Math.PI * 2);
+          c.fill();
+          c.shadowBlur = 0;
+        }
+      }
+
+      renderBatteredGarda(c) {
+        // Garda Kelly laid out flat and defeated on Dublin road
+        const t = Date.now() / 300;
+
+        // Limp Navy Tactical Trousers sprawled on road
+        c.fillStyle = '#0f172a';
+        c.beginPath();
+        c.moveTo(25, -24);
+        c.lineTo(95, -10);
+        c.lineTo(92, -2);
+        c.lineTo(15, -2);
+        c.closePath();
+        c.fill();
+
+        // Combat Boots askew
+        c.fillStyle = '#020617';
+        c.beginPath();
+        c.roundRect(88, -16, 20, 12, 3);
+        c.roundRect(75, -14, 18, 12, 3);
+        c.fill();
+
+        // Hi-Vis Fluorescent Jacket scuffed and wrinkled on ground
+        const hivisGrad = c.createLinearGradient(-35, -30, 30, -5);
+        hivisGrad.addColorStop(0, '#eab308');
+        hivisGrad.addColorStop(0.5, '#facc15');
+        hivisGrad.addColorStop(1, '#ca8a04');
+        c.fillStyle = hivisGrad;
+        c.beginPath();
+        c.roundRect(-35, -32, 65, 26, 6);
+        c.fill();
+
+        // Scuffed Reflective 3M Band with Dublin Road Dirt
+        c.fillStyle = '#ffffff';
+        c.fillRect(-30, -22, 55, 6);
+        c.fillStyle = 'rgba(51, 65, 85, 0.7)';
+        c.fillRect(-15, -24, 14, 8); // Road dirt smudge
+
+        // Slumped Head on Pavement
+        c.fillStyle = '#fde3d6';
+        c.beginPath();
+        c.ellipse(-52, -18, 19, 17, -0.15, 0, Math.PI * 2);
+        c.fill();
+
+        // Swollen eye / scuff mark
+        c.fillStyle = 'rgba(225, 29, 72, 0.4)';
+        c.beginPath();
+        c.arc(-56, -16, 6, 0, Math.PI * 2);
+        c.fill();
+
+        // Defeated Dizzy Eyes (X _ X)
+        c.strokeStyle = '#451a03';
+        c.lineWidth = 2.2;
+        c.beginPath();
+        c.moveTo(-60, -22); c.lineTo(-54, -16);
+        c.moveTo(-54, -22); c.lineTo(-60, -16);
+        c.moveTo(-48, -22); c.lineTo(-42, -16);
+        c.moveTo(-42, -22); c.lineTo(-48, -16);
+        c.stroke();
+
+        // Blonde hair messy across pavement
+        c.fillStyle = '#eab308';
+        c.beginPath();
+        c.moveTo(-55, -10);
+        c.quadraticCurveTo(-80, -4, -105, -2);
+        c.quadraticCurveTo(-80, -16, -65, -22);
+        c.closePath();
+        c.fill();
+
+        // Peaked Garda Cap knocked off, resting nearby
+        c.fillStyle = '#0f172a';
+        c.beginPath();
+        c.arc(-82, -12, 14, Math.PI, 0);
+        c.fill();
+        c.fillStyle = '#020617';
+        c.fillRect(-96, -12, 28, 4); // Peak visor
+        c.fillStyle = '#f59e0b';
+        c.beginPath();
+        c.arc(-82, -18, 3.5, 0, Math.PI * 2); // Gold badge
+        c.fill();
+
+        // Floating Dazed Stars Orbiting Garda
+        for (let s = 0; s < 3; s++) {
+          const ang = t * 2 + (s * (Math.PI * 2) / 3);
+          const starX = -52 + Math.cos(ang) * 24;
+          const starY = -48 + Math.sin(ang) * 9;
+          c.fillStyle = '#38bdf8';
+          c.shadowColor = '#0284c7';
+          c.shadowBlur = 8;
+          c.beginPath();
+          c.arc(starX, starY, 3.5, 0, Math.PI * 2);
+          c.fill();
+          c.shadowBlur = 0;
+        }
+      }
+
+      /* -------------------------------------------------------------
+         MARIA PBR CHARACTER RENDERER (Photo 1: Barrister Robe & Wig)
+         ------------------------------------------------------------- */
+      renderMariaPBR(c) {
+        if (this.state === 'ko_down') {
+          this.renderBatteredMaria(c);
+          return;
+        }
+
+        const t = Date.now() / 240;
+        const breath = Math.sin(t) * 3;
+        const bob = Math.abs(Math.sin(t * 1.5)) * 2;
+
+        // Dynamic motion trails during attacks
+        if (this.state === 'punch' || this.state === 'kick') {
+          c.fillStyle = 'rgba(56, 189, 248, 0.14)';
+          c.beginPath();
+          c.ellipse(-15, -120, 48, 110, 0, 0, Math.PI * 2);
+          c.fill();
+        }
+
+        // --- LOWER BODY & FEET ---
+        // Black Courtroom Fitted Skirt / Robe Lower Tier
+        const skirtGrad = c.createLinearGradient(-45, -120, 50, 0);
+        skirtGrad.addColorStop(0, '#1a1d29');
+        skirtGrad.addColorStop(0.5, '#0d111a');
+        skirtGrad.addColorStop(1, '#05070c');
+        c.fillStyle = skirtGrad;
+        c.beginPath();
+        c.moveTo(-38, -120);
+        c.lineTo(38, -120);
+        c.lineTo(46 + (this.state === 'kick' ? 36 : 0), -12);
+        c.lineTo(-46, -12);
+        c.closePath();
+        c.fill();
+
+        // Elegant Black Court Heels
+        c.fillStyle = '#090a0f';
+        // Left Shoe
+        c.beginPath();
+        c.roundRect(-36, -14, 26, 14, [4, 8, 3, 2]);
+        c.fill();
+        c.fillStyle = '#1e293b';
+        c.fillRect(-34, -12, 10, 3); // Patent leather sheen
+        // Right Shoe (or Kick foot)
+        if (this.state !== 'kick') {
+          c.fillStyle = '#090a0f';
+          c.beginPath();
+          c.roundRect(10, -14, 26, 14, [4, 8, 3, 2]);
+          c.fill();
+          c.fillStyle = '#1e293b';
+          c.fillRect(12, -12, 10, 3);
+        }
+
+        // --- FLORAL DRESS UNDERLAY (Photo 1) ---
+        // Dark floral bodice peeking through the open court robe
+        c.fillStyle = '#0f172a';
+        c.beginPath();
+        c.roundRect(-22, -165 + breath, 44, 95, 6);
+        c.fill();
+
+        // Handcrafted delicate floral embroidery (Pink, Coral, Cyan wildflowers)
+        const flowers = [
+          {x: -12, y: -148, r: 4.2, col: '#f43f5e', c2: '#fda4af'},
+          {x: 11, y: -136, r: 4.5, col: '#fb7185', c2: '#ffe4e6'},
+          {x: -8, y: -118, r: 3.8, col: '#ec4899', c2: '#fbcfe8'},
+          {x: 9, y: -100, r: 4.2, col: '#38bdf8', c2: '#bae6fd'},
+          {x: -12, y: -88, r: 3.5, col: '#f59e0b', c2: '#fde68a'},
+          {x: 7, y: -154, r: 3.2, col: '#a855f7', c2: '#e9d5ff'},
+          {x: -2, y: -130, r: 2.8, col: '#34d399', c2: '#a7f3d0'}
+        ];
+        flowers.forEach(f => {
+          c.fillStyle = f.col;
+          c.beginPath();
+          c.arc(f.x, f.y + breath, f.r, 0, Math.PI * 2);
+          c.fill();
+          c.fillStyle = f.c2;
+          c.beginPath();
+          c.arc(f.x - 0.8, f.y - 0.8 + breath, f.r * 0.45, 0, Math.PI * 2);
+          c.fill();
+        });
+
+        // --- FLOWING BARRISTER SILK COURT GOWN ---
+        // Voluminous draped gown with realistic cloth creases & specular rim light
+        const gownGrad = c.createLinearGradient(-55, -180, 55, 0);
+        gownGrad.addColorStop(0, '#2b3042');
+        gownGrad.addColorStop(0.2, '#181b26');
+        gownGrad.addColorStop(0.7, '#0b0d14');
+        gownGrad.addColorStop(1, '#030408');
+        c.fillStyle = gownGrad;
+
+        // Robe side drapes falling from shoulders
+        c.beginPath();
+        c.moveTo(-46, -172 + breath);
+        c.quadraticCurveTo(-62, -110, -52, -15);
+        c.lineTo(-24, -18);
+        c.quadraticCurveTo(-34, -100, -22, -165 + breath);
+        c.closePath();
+        c.fill();
+
+        c.beginPath();
+        c.moveTo(46, -172 + breath);
+        c.quadraticCurveTo(62, -110, 52, -15);
+        c.lineTo(24, -18);
+        c.quadraticCurveTo(34, -100, 22, -165 + breath);
+        c.closePath();
+        c.fill();
+
+        // Gown Silk Pleats & Crease Highlights
+        c.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+        c.lineWidth = 2;
+        c.beginPath();
+        c.moveTo(-42, -160 + breath);
+        c.quadraticCurveTo(-50, -90, -44, -20);
+        c.moveTo(42, -160 + breath);
+        c.quadraticCurveTo(50, -90, 44, -20);
+        c.moveTo(-28, -145 + breath);
+        c.lineTo(-30, -35);
+        c.moveTo(28, -145 + breath);
+        c.lineTo(30, -35);
+        c.stroke();
+
+        // --- CRISP WHITE DOUBLE-BAND JABOT / BIB TABS (Photo 1) ---
+        c.shadowColor = 'rgba(255, 255, 255, 0.45)';
+        c.shadowBlur = 12;
+        // White starched neck collar
+        c.fillStyle = '#ffffff';
+        c.beginPath();
+        c.roundRect(-22, -182 + breath, 44, 15, [4, 4, 2, 2]);
+        c.fill();
+        // Left falling tab
+        c.beginPath();
+        c.roundRect(-20, -170 + breath, 18, 48, [0, 0, 4, 4]);
+        c.fill();
+        // Right falling tab
+        c.beginPath();
+        c.roundRect(2, -170 + breath, 18, 48, [0, 0, 4, 4]);
+        c.fill();
+
+        // Subtle tab crease & center split
+        c.fillStyle = '#cbd5e1';
+        c.fillRect(-2, -170 + breath, 4, 48);
+        c.strokeStyle = '#94a3b8';
+        c.lineWidth = 1;
+        c.strokeRect(-20, -170 + breath, 18, 48);
+        c.strokeRect(2, -170 + breath, 18, 48);
+        c.shadowBlur = 0;
+
+        // --- NECK & SHOULDER ANATOMY ---
+        const neckGrad = c.createLinearGradient(0, -196, 0, -180);
+        neckGrad.addColorStop(0, '#fbd5be');
+        neckGrad.addColorStop(1, '#eec0a4');
+        c.fillStyle = neckGrad;
+        c.beginPath();
+        c.roundRect(-12, -194 + breath, 24, 18, 4);
+        c.fill();
+
+        // --- HIGH-FIDELITY FACE & DETAILED FACIAL FEATURES (Photo 1) ---
+        const faceY = -215 + breath;
+
+        // Volumetric Facial Bone Structure
+        const skinGrad = c.createRadialGradient(2, faceY - 2, 6, 2, faceY, 32);
+        skinGrad.addColorStop(0, '#fff1eb');
+        skinGrad.addColorStop(0.65, '#fde2d4');
+        skinGrad.addColorStop(1, '#ecc3aa');
+        c.fillStyle = skinGrad;
+        c.beginPath();
+        c.ellipse(1, faceY, 28, 33, 0, 0, Math.PI * 2);
+        c.fill();
+
+        // Soft Cheek Blushing & Radiance
+        const blushGradL = c.createRadialGradient(-12, faceY + 6, 1, -12, faceY + 6, 12);
+        blushGradL.addColorStop(0, 'rgba(251, 113, 133, 0.38)');
+        blushGradL.addColorStop(1, 'rgba(251, 113, 133, 0)');
+        c.fillStyle = blushGradL;
+        c.beginPath();
+        c.arc(-12, faceY + 6, 12, 0, Math.PI * 2);
+        c.fill();
+
+        const blushGradR = c.createRadialGradient(14, faceY + 6, 1, 14, faceY + 6, 12);
+        blushGradR.addColorStop(0, 'rgba(251, 113, 133, 0.38)');
+        blushGradR.addColorStop(1, 'rgba(251, 113, 133, 0)');
+        c.fillStyle = blushGradR;
+        c.beginPath();
+        c.arc(14, faceY + 6, 12, 0, Math.PI * 2);
+        c.fill();
+
+        // Defined Natural Eyebrows
+        c.strokeStyle = '#6c3214';
+        c.lineWidth = 2.6;
+        c.lineCap = 'round';
+        c.beginPath();
+        c.moveTo(-18, faceY - 9);
+        c.quadraticCurveTo(-11, faceY - 14, -4, faceY - 9);
+        c.moveTo(6, faceY - 9);
+        c.quadraticCurveTo(13, faceY - 14, 20, faceY - 9);
+        c.stroke();
+
+        // Detailed Expressive Eyes (Photo 1)
+        [-11, 13].forEach((ex, idx) => {
+          // Eye Socket Shadow
+          c.fillStyle = 'rgba(180, 83, 9, 0.15)';
+          c.beginPath();
+          c.ellipse(ex, faceY - 3, 8, 6, 0, 0, Math.PI * 2);
+          c.fill();
+
+          // Sclera (Eye White)
+          c.fillStyle = '#ffffff';
+          c.beginPath();
+          c.ellipse(ex, faceY - 2, 7, 4.8, 0, 0, Math.PI * 2);
+          c.fill();
+
+          // Hazel-Amber Iris
+          const irisGrad = c.createRadialGradient(ex + 0.8, faceY - 2, 1, ex + 0.8, faceY - 2, 4);
+          irisGrad.addColorStop(0, '#a16207');
+          irisGrad.addColorStop(0.7, '#713f12');
+          irisGrad.addColorStop(1, '#3b1f06');
+          c.fillStyle = irisGrad;
+          c.beginPath();
+          c.arc(ex + 0.8, faceY - 2, 3.6, 0, Math.PI * 2);
+          c.fill();
+
+          // Dark Pupil
+          c.fillStyle = '#0f172a';
+          c.beginPath();
+          c.arc(ex + 0.8, faceY - 2, 1.8, 0, Math.PI * 2);
+          c.fill();
+
+          // Corneal Specular Catchlight
+          c.fillStyle = '#ffffff';
+          c.beginPath();
+          c.arc(ex + 2, faceY - 3.2, 1.1, 0, Math.PI * 2);
+          c.arc(ex - 0.4, faceY - 0.8, 0.6, 0, Math.PI * 2);
+          c.fill();
+
+          // Upper Eyelash Contour & Liner
+          c.strokeStyle = '#271206';
+          c.lineWidth = 1.8;
+          c.beginPath();
+          c.arc(ex, faceY - 2, 7.2, 1.15 * Math.PI, 1.85 * Math.PI);
+          c.stroke();
+        });
+
+        // Sculpted Nose with Nostril Accents
+        c.strokeStyle = '#c28562';
+        c.lineWidth = 1.6;
+        c.beginPath();
+        c.moveTo(1, faceY - 5);
+        c.lineTo(2, faceY + 7);
+        c.lineTo(-1, faceY + 9);
+        c.lineTo(4, faceY + 9);
+        c.stroke();
+
+        // Maria's Radiant Smile & Defined Lips (Photo 1)
+        // Upper Lip
+        c.fillStyle = '#e11d48';
+        c.beginPath();
+        c.moveTo(-10, faceY + 13);
+        c.quadraticCurveTo(-4, faceY + 11, 1, faceY + 13);
+        c.quadraticCurveTo(6, faceY + 11, 12, faceY + 13);
+        c.quadraticCurveTo(1, faceY + 16, -10, faceY + 13);
+        c.fill();
+
+        // Open Smile Showing Teeth
+        c.fillStyle = '#ffffff';
+        c.beginPath();
+        c.moveTo(-8, faceY + 14);
+        c.lineTo(10, faceY + 14);
+        c.quadraticCurveTo(1, faceY + 22, -8, faceY + 14);
+        c.closePath();
+        c.fill();
+        c.strokeStyle = '#cbd5e1';
+        c.lineWidth = 0.8;
+        c.stroke();
+
+        // Lower Lip with Gloss Highlight
+        c.fillStyle = '#f43f5e';
+        c.beginPath();
+        c.moveTo(-9, faceY + 14);
+        c.quadraticCurveTo(1, faceY + 23, 11, faceY + 14);
+        c.quadraticCurveTo(1, faceY + 20, -9, faceY + 14);
+        c.fill();
+        c.fillStyle = 'rgba(255, 255, 255, 0.4)';
+        c.fillRect(-2, faceY + 19, 6, 1.5);
+
+        // --- NATURAL BRUNETTE HAIR FRAMING THE FACE (Photo 1) ---
+        const hairGrad = c.createLinearGradient(0, faceY - 30, 0, faceY + 50);
+        hairGrad.addColorStop(0, '#92400e');
+        hairGrad.addColorStop(0.5, '#78350f');
+        hairGrad.addColorStop(1, '#451a03');
+        c.fillStyle = hairGrad;
+
+        // Left flowing locks
+        c.beginPath();
+        c.moveTo(-20, faceY - 10);
+        c.quadraticCurveTo(-38, faceY + 18, -26, faceY + 52);
+        c.quadraticCurveTo(-18, faceY + 36, -12, faceY + 10);
+        c.closePath();
+        c.fill();
+
+        // Right flowing locks
+        c.beginPath();
+        c.moveTo(20, faceY - 10);
+        c.quadraticCurveTo(38, faceY + 18, 28, faceY + 54);
+        c.quadraticCurveTo(18, faceY + 36, 12, faceY + 10);
+        c.closePath();
+        c.fill();
+
+        // --- AUTHENTIC BARRISTER HORSEHAIR WIG (Photo 1) ---
+        // Base horsehair wig structure with soft off-white/cream tones
+        c.fillStyle = '#f8fafc';
+        c.strokeStyle = '#cbd5e1';
+        c.lineWidth = 1.4;
+
+        // Front arching wig fringe / band
+        c.beginPath();
+        c.arc(1, faceY - 24, 30, Math.PI * 0.88, Math.PI * 2.12);
+        c.stroke();
+
+        // Voluminous Crown of the Wig
+        const wigDome = c.createLinearGradient(0, faceY - 55, 0, faceY - 20);
+        wigDome.addColorStop(0, '#ffffff');
+        wigDome.addColorStop(0.6, '#f1f5f9');
+        wigDome.addColorStop(1, '#e2e8f0');
+        c.fillStyle = wigDome;
+        c.beginPath();
+        c.arc(1, faceY - 32, 28, Math.PI, 0);
+        c.fill();
+        c.stroke();
+
+        // Multi-tier Detailed Ringlet Rows (Horizontal Horseshoe Curled Rolls)
+        const wigRows = [
+          {y: faceY - 42, count: 6, r: 6.2},
+          {y: faceY - 34, count: 7, r: 6.0},
+          {y: faceY - 26, count: 7, r: 5.8},
+          {y: faceY - 18, count: 6, r: 5.5}
+        ];
+
+        wigRows.forEach(row => {
+          const spacing = 46 / (row.count - 1);
+          for (let i = 0; i < row.count; i++) {
+            const rx = -23 + i * spacing + 1;
+            // Coil shading gradient
+            const coilGrad = c.createRadialGradient(rx - 1, row.y - 1, 1, rx, row.y, row.r);
+            coilGrad.addColorStop(0, '#ffffff');
+            coilGrad.addColorStop(0.65, '#f1f5f9');
+            coilGrad.addColorStop(1, '#cbd5e1');
+            c.fillStyle = coilGrad;
+
+            c.beginPath();
+            c.arc(rx, row.y, row.r, 0, Math.PI * 2);
+            c.fill();
+            c.strokeStyle = '#94a3b8';
+            c.lineWidth = 1.2;
+            c.stroke();
+
+            // Inner curl ringlet spiral
+            c.strokeStyle = '#64748b';
+            c.lineWidth = 1;
+            c.beginPath();
+            c.arc(rx, row.y, row.r * 0.45, 0.2 * Math.PI, 1.8 * Math.PI);
+            c.stroke();
+          }
+        });
+
+        // --- ARMS & COMBAT ACTIONS ---
+        if (this.state === 'punch') {
+          // Dynamic Extended Punch holding Solid Oak Gavel
+          c.fillStyle = '#0f172a';
+          c.beginPath();
+          c.roundRect(14, -172 + breath, 58, 22, 8);
+          c.fill();
+          // Cuff
+          c.fillStyle = '#ffffff';
+          c.fillRect(66, -172 + breath, 8, 22);
+          // Hand
+          c.fillStyle = '#fde2d4';
+          c.beginPath();
+          c.arc(80, -161 + breath, 12, 0, Math.PI * 2);
+          c.fill();
+          // Barrister Gavel Head & Handle
+          c.fillStyle = '#78350f';
+          c.fillRect(84, -196 + breath, 24, 64);
+          c.fillStyle = '#b45309';
+          c.fillRect(60, -167 + breath, 34, 12);
+          // Brass Gavel Bands
+          c.fillStyle = '#f59e0b';
+          c.fillRect(84, -190 + breath, 24, 4);
+          c.fillRect(84, -142 + breath, 24, 4);
+        } else if (this.state === 'kick') {
+          // Dynamic High Leg Extension
+          c.fillStyle = '#0f172a';
+          c.beginPath();
+          c.moveTo(10, -55);
+          c.lineTo(92, -88);
+          c.lineTo(84, -112);
+          c.lineTo(0, -70);
+          c.closePath();
+          c.fill();
+          // High Heel
+          c.fillStyle = '#020617';
+          c.beginPath();
+          c.roundRect(86, -108, 30, 18, [3, 8, 3, 2]);
+          c.fill();
+          c.fillStyle = '#38bdf8';
+          c.fillRect(88, -104, 12, 3); // Motion glow
+        } else {
+          // Natural Ready Combat Stance Hands
+          c.fillStyle = '#0f172a';
+          c.beginPath();
+          c.roundRect(-34, -160 + breath, 20, 48, 8);
+          c.roundRect(18, -160 + breath, 20, 48, 8);
+          c.fill();
+          // White Lace Cuffs
+          c.fillStyle = '#ffffff';
+          c.fillRect(-34, -116 + breath, 20, 6);
+          c.fillRect(18, -116 + breath, 20, 6);
+          // Hands
+          c.fillStyle = '#fde2d4';
+          c.beginPath();
+          c.arc(-24, -108 + breath, 10, 0, Math.PI * 2);
+          c.arc(28, -108 + breath, 10, 0, Math.PI * 2);
+          c.fill();
+        }
+      }
+
+      /* -------------------------------------------------------------
+         GARDA KELLY PBR CHARACTER RENDERER (Photo 2: Hi-Vis & Cap)
+         ------------------------------------------------------------- */
+      renderGardaPBR(c) {
+        if (this.state === 'ko_down') {
+          this.renderBatteredGarda(c);
+          return;
+        }
+
+        const t = Date.now() / 240;
+        const breath = Math.sin(t + 1.2) * 3;
+
+        // Dynamic motion trails during attacks
+        if (this.state === 'punch' || this.state === 'kick') {
+          c.fillStyle = 'rgba(234, 179, 8, 0.16)';
+          c.beginPath();
+          c.ellipse(-15, -120, 48, 110, 0, 0, Math.PI * 2);
+          c.fill();
+        }
+
+        // --- LOWER BODY: TACTICAL CARGO TROUSERS & COMBAT BOOTS ---
+        // Navy Tactical Trousers with Pocket Folds
+        c.fillStyle = '#0f172a';
+        c.beginPath();
+        c.roundRect(-30, -105, 26, 105, [6, 6, 2, 2]);
+        c.roundRect(5, -105, 26, 105, [6, 6, 2, 2]);
+        c.fill();
+
+        // Trouser Seams & Cargo Pockets
+        c.strokeStyle = '#1e293b';
+        c.lineWidth = 2;
+        c.strokeRect(-28, -80, 22, 30);
+        c.strokeRect(7, -80, 22, 30);
+
+        // Tactical Combat Boots with Tread & Eyelets
+        c.fillStyle = '#020617';
+        c.beginPath();
+        c.roundRect(-32, -16, 30, 18, [5, 8, 3, 2]);
+        c.roundRect(4, -16, 30, 18, [5, 8, 3, 2]);
+        c.fill();
+        c.fillStyle = '#475569';
+        c.fillRect(-30, -14, 12, 3);
+        c.fillRect(6, -14, 12, 3);
+
+        // --- UPPER BODY: DUAL-TONE FLUORESCENT GARDA PATROL JACKET (Photo 2) ---
+        // Navy Lower Jacket Waist Panel
+        c.fillStyle = '#0f172a';
+        c.beginPath();
+        c.roundRect(-38, -135 + breath, 76, 52, [0, 0, 10, 10]);
+        c.fill();
+
+        // High-Vis Fluorescent Yellow/Chartreuse Upper Yoke (Photo 2)
+        const hivisGrad = c.createLinearGradient(0, -185, 0, -135);
+        hivisGrad.addColorStop(0, '#fef08a');
+        hivisGrad.addColorStop(0.35, '#facc15');
+        hivisGrad.addColorStop(1, '#eab308');
+        c.fillStyle = hivisGrad;
+        c.beginPath();
+        c.moveTo(-38, -182 + breath);
+        c.lineTo(38, -182 + breath);
+        c.lineTo(41, -134 + breath);
+        c.lineTo(-41, -134 + breath);
+        c.closePath();
+        c.fill();
+
+        // 3M Prismatic Silver Reflective Stripe with Luminescent Bloom (Photo 2)
+        c.shadowColor = '#ffffff';
+        c.shadowBlur = 14;
+        c.fillStyle = '#ffffff';
+        c.fillRect(-41, -142 + breath, 82, 9);
+        c.shadowBlur = 0;
+        c.fillStyle = '#cbd5e1';
+        c.fillRect(-41, -137 + breath, 82, 2.5);
+
+        // Center Heavy-Duty Zipper
+        c.fillStyle = '#334155';
+        c.fillRect(-2, -182 + breath, 4, 100);
+
+        // Blue Collar Inset & Radio Epaulettes
+        c.fillStyle = '#1e3a8a';
+        c.beginPath();
+        c.moveTo(-16, -182 + breath);
+        c.lineTo(0, -168 + breath);
+        c.lineTo(16, -182 + breath);
+        c.closePath();
+        c.fill();
+
+        // Official Garda Shoulder Epaulettes (Navy with Rank Stripes)
+        c.fillStyle = '#0f172a';
+        c.fillRect(-38, -180 + breath, 14, 8);
+        c.fillRect(24, -180 + breath, 14, 8);
+
+        // Gold Embroidered An Garda Síochána Chest Badge Patch
+        c.fillStyle = '#f59e0b';
+        c.shadowColor = '#fbbf24';
+        c.shadowBlur = 8;
+        c.beginPath();
+        c.arc(18, -156 + breath, 7.5, 0, Math.PI * 2);
+        c.fill();
+        c.shadowBlur = 0;
+        c.fillStyle = '#1e3a8a';
+        c.beginPath();
+        c.arc(18, -156 + breath, 4.5, 0, Math.PI * 2);
+        c.fill();
+
+        // "GARDA" Text Emblazoned on Chest Strip
+        c.fillStyle = '#64748b';
+        c.font = '900 8.5px "Rajdhani", sans-serif';
+        c.fillText('GARDA', 6, -145 + breath);
+
+        // Body-Worn Camera (Photo 2 left chest mount)
+        c.fillStyle = '#020617';
+        c.beginPath();
+        c.roundRect(-22, -158 + breath, 13, 16, 3);
+        c.fill();
+        c.fillStyle = '#38bdf8';
+        c.beginPath();
+        c.arc(-15.5, -152 + breath, 2.8, 0, Math.PI * 2);
+        c.fill();
+        c.fillStyle = '#ef4444';
+        c.fillRect(-20, -146 + breath, 3, 2); // Rec light
+
+        // --- NECK & VOLUMETRIC FACE (Photo 2) ---
+        const neckGrad = c.createLinearGradient(0, -196, 0, -180);
+        neckGrad.addColorStop(0, '#fcd3b8');
+        neckGrad.addColorStop(1, '#e2ad8b');
+        c.fillStyle = neckGrad;
+        c.beginPath();
+        c.roundRect(-11, -194 + breath, 22, 18, 4);
+        c.fill();
+
+        // Volumetric Head & Realistic Jawline
+        const faceY = -214 + breath;
+        const skinGrad = c.createRadialGradient(1, faceY - 2, 6, 1, faceY, 30);
+        skinGrad.addColorStop(0, '#fff4ec');
+        skinGrad.addColorStop(0.65, '#fde3d6');
+        skinGrad.addColorStop(1, '#eab699');
+        c.fillStyle = skinGrad;
+        c.beginPath();
+        c.ellipse(1, faceY, 26, 31, 0, 0, Math.PI * 2);
+        c.fill();
+
+        // Rosy Cheeks
+        const blushGradL = c.createRadialGradient(-10, faceY + 5, 1, -10, faceY + 5, 10);
+        blushGradL.addColorStop(0, 'rgba(251, 146, 60, 0.32)');
+        blushGradL.addColorStop(1, 'rgba(251, 146, 60, 0)');
+        c.fillStyle = blushGradL;
+        c.beginPath();
+        c.arc(-10, faceY + 5, 10, 0, Math.PI * 2);
+        c.fill();
+
+        const blushGradR = c.createRadialGradient(12, faceY + 5, 1, 12, faceY + 5, 10);
+        blushGradR.addColorStop(0, 'rgba(251, 146, 60, 0.32)');
+        blushGradR.addColorStop(1, 'rgba(251, 146, 60, 0)');
+        c.fillStyle = blushGradR;
+        c.beginPath();
+        c.arc(12, faceY + 5, 10, 0, Math.PI * 2);
+        c.fill();
+
+        // Natural Light Golden-Brown Brows
+        c.strokeStyle = '#9a3412';
+        c.lineWidth = 2.4;
+        c.lineCap = 'round';
+        c.beginPath();
+        c.moveTo(-16, faceY - 8);
+        c.quadraticCurveTo(-10, faceY - 12, -3, faceY - 8);
+        c.moveTo(5, faceY - 8);
+        c.quadraticCurveTo(12, faceY - 12, 18, faceY - 8);
+        c.stroke();
+
+        // Expressive Blue Eyes (Photo 2)
+        [-10, 12].forEach((ex) => {
+          c.fillStyle = '#ffffff';
+          c.beginPath();
+          c.ellipse(ex, faceY - 2, 6.5, 4.4, 0, 0, Math.PI * 2);
+          c.fill();
+
+          // Azure Iris
+          const irisGrad = c.createRadialGradient(ex + 0.8, faceY - 2, 1, ex + 0.8, faceY - 2, 3.5);
+          irisGrad.addColorStop(0, '#38bdf8');
+          irisGrad.addColorStop(0.6, '#0284c7');
+          irisGrad.addColorStop(1, '#0c4a6e');
+          c.fillStyle = irisGrad;
+          c.beginPath();
+          c.arc(ex + 0.8, faceY - 2, 3.2, 0, Math.PI * 2);
+          c.fill();
+
+          // Pupil
+          c.fillStyle = '#0f172a';
+          c.beginPath();
+          c.arc(ex + 0.8, faceY - 2, 1.6, 0, Math.PI * 2);
+          c.fill();
+
+          // Catchlight
+          c.fillStyle = '#ffffff';
+          c.beginPath();
+          c.arc(ex + 1.8, faceY - 3, 1.0, 0, Math.PI * 2);
+          c.fill();
+
+          // Eyelashes & Liner
+          c.strokeStyle = '#451a03';
+          c.lineWidth = 1.6;
+          c.beginPath();
+          c.arc(ex, faceY - 2, 6.6, 1.15 * Math.PI, 1.85 * Math.PI);
+          c.stroke();
+        });
+
+        // Sculpted Nose
+        c.strokeStyle = '#c27c54';
+        c.lineWidth = 1.5;
+        c.beginPath();
+        c.moveTo(1, faceY - 4);
+        c.lineTo(2, faceY + 6);
+        c.lineTo(-1, faceY + 8);
+        c.lineTo(4, faceY + 8);
+        c.stroke();
+
+        // Cheerful Open Smile (Photo 2)
+        c.fillStyle = '#ffffff';
+        c.beginPath();
+        c.moveTo(-7, faceY + 13);
+        c.lineTo(9, faceY + 13);
+        c.quadraticCurveTo(1, faceY + 20, -7, faceY + 13);
+        c.closePath();
+        c.fill();
+        c.strokeStyle = '#e11d48';
+        c.lineWidth = 1.8;
+        c.beginPath();
+        c.arc(1, faceY + 12, 8, 0.1 * Math.PI, 0.9 * Math.PI);
+        c.stroke();
+
+        // --- DISTINCT BLONDE SIDE PONYTAIL SWEPT FORWARD (Photo 2) ---
+        const ponyGrad = c.createLinearGradient(0, faceY - 10, 0, faceY + 70);
+        ponyGrad.addColorStop(0, '#fef08a');
+        ponyGrad.addColorStop(0.35, '#facc15');
+        ponyGrad.addColorStop(0.8, '#d97706');
+        ponyGrad.addColorStop(1, '#92400e');
+        c.fillStyle = ponyGrad;
+
+        // Flowing ponytail resting over her right collarbone
+        c.beginPath();
+        c.moveTo(-16, faceY - 6);
+        c.bezierCurveTo(-44, faceY + 16, -42, faceY + 48, -26, faceY + 74);
+        c.bezierCurveTo(-20, faceY + 62, -22, faceY + 40, -12, faceY + 14);
+        c.closePath();
+        c.fill();
+
+        // Ponytail Hair Strands & Highlights
+        c.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+        c.lineWidth = 1.4;
+        c.beginPath();
+        c.moveTo(-18, faceY + 2);
+        c.quadraticCurveTo(-38, faceY + 30, -28, faceY + 68);
+        c.stroke();
+
+        // --- OFFICIAL GARDA PEAKED BASEBALL CAP (Photo 2) ---
+        // Dark Navy Cap Crown
+        const capGrad = c.createLinearGradient(0, faceY - 50, 0, faceY - 18);
+        capGrad.addColorStop(0, '#1e293b');
+        capGrad.addColorStop(1, '#0f172a');
+        c.fillStyle = capGrad;
+        c.beginPath();
+        c.arc(1, faceY - 20, 27, Math.PI, 0);
+        c.fill();
+
+        // Stitched Cap Seams
+        c.strokeStyle = '#334155';
+        c.lineWidth = 1.2;
+        c.beginPath();
+        c.moveTo(1, faceY - 47);
+        c.lineTo(1, faceY - 20);
+        c.stroke();
+
+        // Front Visor Peak with Realistic Curve & Under-Shade
+        c.fillStyle = '#020617';
+        c.beginPath();
+        c.moveTo(-10, faceY - 18);
+        c.quadraticCurveTo(18, faceY - 24, 38, faceY - 14);
+        c.quadraticCurveTo(20, faceY - 12, -10, faceY - 18);
+        c.fill();
+
+        // Official Gold Embroidered Garda Badge on Cap Front (Photo 2)
+        c.fillStyle = '#f59e0b';
+        c.shadowColor = '#fbbf24';
+        c.shadowBlur = 10;
+        c.beginPath();
+        c.arc(9, faceY - 30, 7.5, 0, Math.PI * 2);
+        c.fill();
+        c.shadowBlur = 0;
+        // Inner blue ring
+        c.fillStyle = '#1e3a8a';
+        c.beginPath();
+        c.arc(9, faceY - 30, 4.2, 0, Math.PI * 2);
+        c.fill();
+        // Inner gold harp/crest detail
+        c.fillStyle = '#fef08a';
+        c.beginPath();
+        c.arc(9, faceY - 30, 2, 0, Math.PI * 2);
+        c.fill();
+
+        // --- COMBAT ARMS & TACTICAL SLEEVES ---
+        if (this.state === 'punch') {
+          // Fluorescent Yellow Punching Sleeve with 3M Reflective Stripe
+          c.fillStyle = '#eab308';
+          c.beginPath();
+          c.roundRect(14, -172 + breath, 58, 22, 8);
+          c.fill();
+          // Reflective band on cuff
+          c.fillStyle = '#ffffff';
+          c.fillRect(52, -172 + breath, 8, 22);
+          // Hand
+          c.fillStyle = '#fde3d6';
+          c.beginPath();
+          c.arc(80, -161 + breath, 12, 0, Math.PI * 2);
+          c.fill();
+        } else if (this.state === 'kick') {
+          // Tactical Kick
+          c.fillStyle = '#0f172a';
+          c.beginPath();
+          c.moveTo(10, -55);
+          c.lineTo(90, -84);
+          c.lineTo(82, -108);
+          c.lineTo(0, -70);
+          c.closePath();
+          c.fill();
+          c.fillStyle = '#020617';
+          c.beginPath();
+          c.roundRect(84, -104, 30, 18, [3, 8, 3, 2]);
+          c.fill();
+          c.fillStyle = '#f59e0b';
+          c.fillRect(86, -100, 12, 3);
+        } else {
+          // Natural Combat Stance
+          c.fillStyle = '#eab308';
+          c.beginPath();
+          c.roundRect(-36, -164 + breath, 22, 50, 8);
+          c.roundRect(16, -164 + breath, 22, 50, 8);
+          c.fill();
+          // Reflective cuffs
+          c.fillStyle = '#ffffff';
+          c.fillRect(-36, -126 + breath, 22, 6);
+          c.fillRect(16, -126 + breath, 22, 6);
+          // Hands
+          c.fillStyle = '#fde3d6';
+          c.beginPath();
+          c.arc(-25, -112 + breath, 10, 0, Math.PI * 2);
+          c.arc(27, -112 + breath, 10, 0, Math.PI * 2);
+          c.fill();
+        }
+      }
+    }
+
+    /* -------------------------------------------------------------
+       AUTHENTIC DUBLIN BACKGROUND (EXACT USER UPLOADED SCENE)
+       ------------------------------------------------------------- */
+    function renderDublinArenaStage(c) {
+      // If user has uploaded/saved custom background image, render it flawlessly
+      if (bgReady && customBgImage) {
+        // High-Quality Aspect Fill
+        const imgRatio = customBgImage.width / customBgImage.height;
+        const canvasRatio = V_WIDTH / V_HEIGHT;
+        let renderW, renderH, offsetX, offsetY;
+
+        if (imgRatio > canvasRatio) {
+          renderH = V_HEIGHT;
+          renderW = V_HEIGHT * imgRatio;
+          offsetX = (V_WIDTH - renderW) / 2;
+          offsetY = 0;
+        } else {
+          renderW = V_WIDTH;
+          renderH = V_WIDTH / imgRatio;
+          offsetX = 0;
+          offsetY = (V_HEIGHT - renderH) / 2;
+        }
+
+        c.drawImage(customBgImage, offsetX, offsetY, renderW, renderH);
+
+        // Dynamic Dublin Rain Streaks Over Custom Image
+        c.strokeStyle = 'rgba(203, 213, 225, 0.45)';
+        c.lineWidth = 1.6;
+        c.beginPath();
+        for (let i = 0; i < rainDrops.length; i++) {
+          const drop = rainDrops[i];
+          c.moveTo(drop.x, drop.y);
+          c.lineTo(drop.x - 3, drop.y + drop.length);
+          drop.y += drop.speed;
+          drop.x -= 2.2;
+          if (drop.y > V_HEIGHT) {
+            drop.y = -20;
+            drop.x = Math.random() * (V_WIDTH + 100);
+          }
+        }
+        c.stroke();
+
+        // Subtle Ground Puddle Reflection
+        const puddleGrad = c.createRadialGradient(V_WIDTH / 2, FLOOR_Y + 10, 10, V_WIDTH / 2, FLOOR_Y + 10, 520);
+        puddleGrad.addColorStop(0, 'rgba(56, 189, 248, 0.12)');
+        puddleGrad.addColorStop(0.5, 'rgba(251, 191, 36, 0.08)');
+        puddleGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+        c.fillStyle = puddleGrad;
+        c.beginPath();
+        c.ellipse(V_WIDTH / 2, FLOOR_Y + 10, 480, 55, 0, 0, Math.PI * 2);
+        c.fill();
+        return;
+      }
+
+      // 1. Atmospheric Overcast Dublin Sky
+      const skyGrad = c.createLinearGradient(0, 0, 0, 720);
+      skyGrad.addColorStop(0, '#2d3748');
+      skyGrad.addColorStop(0.3, '#4a5568');
+      skyGrad.addColorStop(0.7, '#718096');
+      skyGrad.addColorStop(1, '#a0aec0');
+      c.fillStyle = skyGrad;
+      c.fillRect(0, 0, V_WIDTH, V_HEIGHT);
+
+      // Dublin Spire Towering into the Clouds
+      const spireGrad = c.createLinearGradient(530, 20, 550, 520);
+      spireGrad.addColorStop(0, '#e2e8f0');
+      spireGrad.addColorStop(0.7, '#94a3b8');
+      spireGrad.addColorStop(1, '#64748b');
+      c.fillStyle = spireGrad;
+      c.beginPath();
+      c.moveTo(540, 25);
+      c.lineTo(554, 520);
+      c.lineTo(526, 520);
+      c.closePath();
+      c.fill();
+
+      // Factory Brick Chimneys
+      c.fillStyle = '#9a3412';
+      c.fillRect(725, 230, 54, 180);
+      c.fillStyle = '#431407';
+      c.fillRect(720, 220, 64, 14);
+
+      // 2. Georgian Red Brick Buildings (Central Dublin Perspective)
+      const brickGrad = c.createLinearGradient(0, 200, 0, 920);
+      brickGrad.addColorStop(0, '#b91c1c');
+      brickGrad.addColorStop(0.5, '#991b1b');
+      brickGrad.addColorStop(1, '#7f1d1d');
+      c.fillStyle = brickGrad;
+      c.fillRect(170, 320, 440, 600); // Main Georgian townhouses
+
+      // Left Georgian Townhouse
+      c.fillStyle = '#a21caf';
+      c.fillRect(0, 100, 210, 840);
+
+      // Right Street Corner Block
+      c.fillStyle = '#374151';
+      c.fillRect(780, 240, 300, 740);
+
+      // Georgian Multi-Pane Sash Windows with Stone Sills
+      for (let floor = 0; floor < 3; floor++) {
+        for (let col = 0; col < 4; col++) {
+          const wx = 205 + col * 98;
+          const wy = 360 + floor * 115;
+          c.fillStyle = '#f8fafc';
+          c.fillRect(wx - 2, wy - 2, 54, 76);
+          c.fillStyle = (floor === 0 && col === 1) ? '#fef08a' : '#1e293b';
+          c.fillRect(wx + 2, wy + 2, 46, 68);
+          // Window Grids
+          c.strokeStyle = '#ffffff';
+          c.lineWidth = 1.5;
+          c.beginPath();
+          c.moveTo(wx + 25, wy + 2);
+          c.lineTo(wx + 25, wy + 70);
+          c.moveTo(wx + 2, wy + 36);
+          c.lineTo(wx + 48, wy + 36);
+          c.stroke();
+        }
+      }
+
+      // Georgian Red Door with Fanlight
+      c.fillStyle = '#f8fafc';
+      c.fillRect(380, 720, 70, 120);
+      c.fillStyle = '#dc2626';
+      c.fillRect(388, 736, 54, 104);
+      c.fillStyle = '#fbbf24';
+      c.beginPath();
+      c.arc(432, 790, 4, 0, Math.PI * 2); // Brass doorknob
+      c.fill();
+
+      // 3. Iconic Dublin Storefronts
+      // Left: O'DONOGHUE'S (Irish Racing Green Heritage Facade)
+      c.fillStyle = '#065f46';
+      c.fillRect(0, 660, 220, 280);
+      c.fillStyle = '#fbbf24';
+      c.font = '900 21px "Cinzel", serif';
+      c.fillText("O'DONOGHUE'S", 12, 725);
+
+      // Center Branch: O'DONOGHUE'S
+      c.fillStyle = '#065f46';
+      c.fillRect(490, 660, 260, 280);
+      c.fillStyle = '#fbbf24';
+      c.font = '900 17px "Cinzel", serif';
+      c.fillText("O'DONOGHUE'S", 520, 715);
+
+      // Right: THE GEORGE (Dublin Landmark Cobalt Blue Pub)
+      c.fillStyle = '#1e3a8a';
+      c.fillRect(800, 660, 280, 280);
+      c.fillStyle = '#facc15';
+      c.font = '900 24px "Cinzel", serif';
+      c.fillText("THE GEORGE", 830, 725);
+
+      // Hanging Pub Signs & Streetlights
+      c.fillStyle = '#064e3b';
+      c.fillRect(865, 540, 68, 90);
+      c.fillStyle = '#fbbf24';
+      c.font = '900 26px serif';
+      c.fillText("Y", 890, 600);
+
+      // Street Lantern Glow
+      c.fillStyle = '#fef08a';
+      c.shadowColor = '#facc15';
+      c.shadowBlur = 35;
+      c.beginPath();
+      c.arc(60, 640, 14, 0, Math.PI * 2);
+      c.arc(770, 560, 14, 0, Math.PI * 2);
+      c.fill();
+      c.shadowBlur = 0;
+
+      // 4. Cheering Dublin Crowd (Left & Right Pavements)
+      const crowdTones = ['#ea580c', '#16a34a', '#dc2626', '#2563eb', '#ca8a04', '#db2777', '#7c3aed'];
+      for (let p = 0; p < 26; p++) {
+        const isLeft = p < 13;
+        const cx = isLeft ? 15 + (p % 4) * 44 : 760 + (p % 4) * 76;
+        const cy = 820 + Math.floor(p / 4) * 42 + Math.sin(Date.now() / 200 + p) * 5;
+        c.fillStyle = '#fed7aa';
+        c.beginPath();
+        c.arc(cx, cy, 15, 0, Math.PI * 2);
+        c.fill();
+        c.fillStyle = crowdTones[p % crowdTones.length];
+        c.beginPath();
+        c.roundRect(cx - 16, cy + 14, 32, 54, [10, 10, 0, 0]);
+        c.fill();
+      }
+
+      // 5. Wet Asphalt Dublin Roadway (Cracked Wet Street with Yellow Markings)
+      const roadGrad = c.createLinearGradient(0, 940, 0, V_HEIGHT);
+      roadGrad.addColorStop(0, '#475569');
+      roadGrad.addColorStop(0.3, '#334155');
+      roadGrad.addColorStop(0.7, '#1e293b');
+      roadGrad.addColorStop(1, '#0f172a');
+      c.fillStyle = roadGrad;
+      c.fillRect(0, 940, V_WIDTH, V_HEIGHT - 940);
+
+      // Double Yellow Kerb Lines
+      c.fillStyle = '#eab308';
+      c.fillRect(70, 1140, 14, 520);
+      c.fillRect(94, 1140, 14, 520);
+
+      // Broken White Center Road Markings
+      c.fillStyle = 'rgba(255, 255, 255, 0.45)';
+      c.fillRect(660, 1020, 14, 60);
+      c.fillRect(680, 1200, 16, 90);
+      c.fillRect(740, 1420, 20, 130);
+
+      // Asphalt Surface Cracks
+      c.strokeStyle = 'rgba(15, 23, 42, 0.7)';
+      c.lineWidth = 3;
+      c.beginPath();
+      c.moveTo(340, 1340);
+      c.lineTo(390, 1420);
+      c.lineTo(440, 1460);
+      c.moveTo(280, 1580);
+      c.lineTo(360, 1640);
+      c.stroke();
+
+      // 6. Garda Saloon Cruiser with Flashing Blue Lightbar (Right Background)
+      const gX = 550;
+      const gY = 1010;
+
+      // Active Emergency Flasher
+      const flash = Math.sin(Date.now() / 90) > 0;
+      c.shadowColor = flash ? '#38bdf8' : '#ef4444';
+      c.shadowBlur = 45;
+      c.fillStyle = flash ? '#38bdf8' : '#ef4444';
+      c.beginPath();
+      c.roundRect(gX + 70, gY - 32, 95, 18, 6);
+      c.fill();
+      c.shadowBlur = 0;
+
+      // Patrol Cruiser White Body
+      c.fillStyle = '#f8fafc';
+      c.beginPath();
+      c.roundRect(gX, gY, 340, 125, [32, 28, 12, 12]);
+      c.fill();
+
+      // Garda Fluorescent Yellow & Royal Blue Battenburg Checkers
+      c.fillStyle = '#eab308';
+      c.fillRect(gX + 25, gY + 46, 290, 34);
+      c.fillStyle = '#1d4ed8';
+      for (let b = 0; b < 7; b++) {
+        c.fillRect(gX + 30 + b * 40, gY + 46, 20, 34);
+      }
+      c.fillStyle = '#1e3a8a';
+      c.font = '900 24px "Rajdhani", sans-serif';
+      c.fillText('GARDA', gX + 115, gY + 72);
+
+      // Cruiser Windows & Dark Wheels
+      c.fillStyle = '#0f172a';
+      c.beginPath();
+      c.roundRect(gX + 45, gY - 14, 220, 52, [22, 22, 0, 0]);
+      c.fill();
+      c.fillStyle = '#020617';
+      c.beginPath();
+      c.arc(gX + 68, gY + 125, 28, 0, Math.PI * 2);
+      c.arc(gX + 280, gY + 125, 28, 0, Math.PI * 2);
+      c.fill();
+
+      // Garda Officer Writing Ticket by Patrol Car
+      c.fillStyle = '#eab308';
+      c.beginPath();
+      c.roundRect(gX + 42, gY + 18, 38, 70, 8); // Hi-vis jacket
+      c.fill();
+      c.fillStyle = '#0f172a';
+      c.fillRect(gX + 46, gY + 88, 14, 55); // Dark trousers
+      c.fillRect(gX + 62, gY + 88, 14, 55);
+      c.fillStyle = '#fed7aa';
+      c.beginPath();
+      c.arc(gX + 60, gY + 8, 13, 0, Math.PI * 2); // Head
+      c.fill();
+      c.fillStyle = '#0f172a';
+      c.beginPath();
+      c.arc(gX + 60, gY + 2, 14, Math.PI, 0); // Cap
+      c.fill();
+      c.fillRect(gX + 60, gY + 2, 16, 4);
+
+      // 7. EXACT WHITE DACIA SANDERO (Center Foreground as in Uploaded Image)
+      const dX = 110;
+      const dY = 1080;
+
+      // Realistic Ambient Ground Shadow
+      c.fillStyle = 'rgba(0, 0, 0, 0.78)';
+      c.beginPath();
+      c.ellipse(dX + 240, dY + 235, 260, 42, 0, 0, Math.PI * 2);
+      c.fill();
+
+      // White Dacia Sandero Body with 3D Specular Shading
+      const daciaGrad = c.createLinearGradient(dX, dY, dX, dY + 200);
+      daciaGrad.addColorStop(0, '#ffffff');
+      daciaGrad.addColorStop(0.6, '#f1f5f9');
+      daciaGrad.addColorStop(1, '#cbd5e1');
+      c.fillStyle = daciaGrad;
+      c.beginPath();
+      c.roundRect(dX, dY + 50, 460, 165, [48, 32, 22, 16]);
+      c.fill();
+
+      // Aerodynamic Cabin Roofline
+      c.fillStyle = '#0f172a';
+      c.beginPath();
+      c.moveTo(dX + 105, dY + 52);
+      c.lineTo(dX + 175, dY - 26);
+      c.lineTo(dX + 395, dY - 26);
+      c.lineTo(dX + 438, dY + 52);
+      c.closePath();
+      c.fill();
+
+      // Tinted Passenger Windows with Light Sheen
+      const daciaGlass = c.createLinearGradient(0, dY - 26, 0, dY + 50);
+      daciaGlass.addColorStop(0, '#1e293b');
+      daciaGlass.addColorStop(0.6, '#334155');
+      daciaGlass.addColorStop(1, '#0f172a');
+      c.fillStyle = daciaGlass;
+      c.beginPath();
+      c.moveTo(dX + 120, dY + 48);
+      c.lineTo(dX + 180, dY - 20);
+      c.lineTo(dX + 275, dY - 20);
+      c.lineTo(dX + 275, dY + 48);
+      c.closePath();
+      c.fill();
+      c.beginPath();
+      c.moveTo(dX + 285, dY + 48);
+      c.lineTo(dX + 285, dY - 20);
+      c.lineTo(dX + 385, dY - 20);
+      c.lineTo(dX + 422, dY + 48);
+      c.closePath();
+      c.fill();
+
+      // Front Radiator Grille & Dacia Chrome Inserts
+      c.fillStyle = '#0f172a';
+      c.beginPath();
+      c.roundRect(dX + 16, dY + 112, 210, 50, 12);
+      c.fill();
+
+      // Dacia Central Shield Badge
+      c.fillStyle = '#cbd5e1';
+      c.beginPath();
+      c.moveTo(dX + 108, dY + 124);
+      c.lineTo(dX + 132, dY + 124);
+      c.lineTo(dX + 126, dY + 144);
+      c.lineTo(dX + 114, dY + 144);
+      c.closePath();
+      c.fill();
+
+      // Amber/Warm Glowing Sandero Headlights (As seen in the uploaded picture)
+      c.shadowColor = '#f59e0b';
+      c.shadowBlur = 38;
+      c.fillStyle = '#fef08a';
+      // Left Headlight
+      c.beginPath();
+      c.moveTo(dX + 22, dY + 98);
+      c.lineTo(dX + 74, dY + 98);
+      c.lineTo(dX + 88, dY + 128);
+      c.lineTo(dX + 28, dY + 128);
+      c.closePath();
+      c.fill();
+      // Right Headlight
+      c.beginPath();
+      c.moveTo(dX + 184, dY + 108);
+      c.lineTo(dX + 246, dY + 108);
+      c.lineTo(dX + 240, dY + 134);
+      c.lineTo(dX + 180, dY + 134);
+      c.closePath();
+      c.fill();
+      c.shadowBlur = 0;
+
+      // Exact License Plate from Uploaded Image: "2AN 2820"
+      c.fillStyle = '#ffffff';
+      c.strokeStyle = '#0f172a';
+      c.lineWidth = 2.5;
+      c.fillRect(dX + 46, dY + 168, 108, 26);
+      c.strokeRect(dX + 46, dY + 168, 108, 26);
+      c.fillStyle = '#1e3a8a';
+      c.fillRect(dX + 47, dY + 169, 13, 24); // Blue IRL band
+      c.fillStyle = '#0f172a';
+      c.font = '900 13px sans-serif';
+      c.fillText('2AN 2820', dX + 68, dY + 186);
+
+      // Sandero Alloy Wheels
+      c.fillStyle = '#020617';
+      c.beginPath();
+      c.arc(dX + 372, dY + 210, 54, 0, Math.PI * 2);
+      c.fill();
+      c.fillStyle = '#94a3b8';
+      c.beginPath();
+      c.arc(dX + 372, dY + 210, 36, 0, Math.PI * 2);
+      c.fill();
+      c.fillStyle = '#020617';
+      c.beginPath();
+      c.arc(dX + 372, dY + 210, 18, 0, Math.PI * 2);
+      c.fill();
+
+      // Dublin Rain Streaks
+      c.strokeStyle = 'rgba(203, 213, 225, 0.42)';
+      c.lineWidth = 1.6;
+      c.beginPath();
+      for (let i = 0; i < rainDrops.length; i++) {
+        const drop = rainDrops[i];
+        c.moveTo(drop.x, drop.y);
+        c.lineTo(drop.x - 3, drop.y + drop.length);
+        drop.y += drop.speed;
+        drop.x -= 2.2;
+        if (drop.y > V_HEIGHT) {
+          drop.y = -20;
+          drop.x = Math.random() * (V_WIDTH + 100);
+        }
+      }
+      c.stroke();
+
+      // Wet Asphalt Puddle Shimmer on Combat Plane
+      const puddleGrad = c.createRadialGradient(V_WIDTH / 2, FLOOR_Y + 10, 10, V_WIDTH / 2, FLOOR_Y + 10, 520);
+      puddleGrad.addColorStop(0, 'rgba(56, 189, 248, 0.14)');
+      puddleGrad.addColorStop(0.5, 'rgba(251, 191, 36, 0.09)');
+      puddleGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      c.fillStyle = puddleGrad;
+      c.beginPath();
+      c.ellipse(V_WIDTH / 2, FLOOR_Y + 10, 480, 55, 0, 0, Math.PI * 2);
+      c.fill();
+    }
+
+    /* -------------------------------------------------------------
+       VERTICAL ESPORTS HUD (Optimized for Mobile Portrait Screen)
+       ------------------------------------------------------------- */
+    function renderVerticalHUD(c, p1, p2, time) {
+      const barWidth = 420;
+      const barHeight = 28;
+
+      c.save();
+
+      // P1 (Maria) Top Left Bar
+      c.fillStyle = 'rgba(15, 23, 42, 0.85)';
+      c.beginPath();
+      c.moveTo(40, 60);
+      c.lineTo(40 + barWidth, 60);
+      c.lineTo(40 + barWidth - 14, 60 + barHeight);
+      c.lineTo(40, 60 + barHeight);
+      c.closePath();
+      c.fill();
+
+      const p1W = (p1.hp / p1.maxHp) * barWidth;
+      const p1Grad = c.createLinearGradient(40, 0, 40 + barWidth, 0);
+      p1Grad.addColorStop(0, '#10b981');
+      p1Grad.addColorStop(1, '#06b6d4');
+      c.fillStyle = p1Grad;
+      c.beginPath();
+      c.moveTo(40 + (barWidth - p1W), 60);
+      c.lineTo(40 + barWidth, 60);
+      c.lineTo(40 + barWidth - 14, 60 + barHeight);
+      c.lineTo(40 + (barWidth - p1W) - (p1W > 14 ? 14 : 0), 60 + barHeight);
+      c.closePath();
+      c.fill();
+
+      c.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+      c.lineWidth = 2;
+      c.stroke();
+
+      c.fillStyle = '#ffffff';
+      c.font = '900 24px "Syne", sans-serif';
+      c.fillText('MARIA', 40, 48);
+      c.fillStyle = '#38bdf8';
+      c.font = '700 13px "Rajdhani", sans-serif';
+      c.fillText('BARRISTER', 140, 46);
+
+      // P1 EX Meter
+      c.fillStyle = 'rgba(15, 23, 42, 0.85)';
+      c.fillRect(40, 96, 200, 10);
+      c.fillStyle = '#38bdf8';
+      c.fillRect(40, 96, (p1.energy / 100) * 200, 10);
+
+      // P2 (Garda Kelly) Top Right Bar
+      const p2X = V_WIDTH - 40 - barWidth;
+      c.fillStyle = 'rgba(15, 23, 42, 0.85)';
+      c.beginPath();
+      c.moveTo(p2X, 60);
+      c.lineTo(p2X + barWidth, 60);
+      c.lineTo(p2X + barWidth, 60 + barHeight);
+      c.lineTo(p2X + 14, 60 + barHeight);
+      c.closePath();
+      c.fill();
+
+      const p2W = (p2.hp / p2.maxHp) * barWidth;
+      const p2Grad = c.createLinearGradient(p2X, 0, p2X + barWidth, 0);
+      p2Grad.addColorStop(0, '#f43f5e');
+      p2Grad.addColorStop(1, '#e11d48');
+      c.fillStyle = p2Grad;
+      c.beginPath();
+      c.moveTo(p2X, 60);
+      c.lineTo(p2X + p2W, 60);
+      c.lineTo(p2X + p2W + (p2W > 14 ? 14 : 0), 60 + barHeight);
+      c.lineTo(p2X + 14, 60 + barHeight);
+      c.closePath();
+      c.fill();
+
+      c.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+      c.lineWidth = 2;
+      c.stroke();
+
+      c.fillStyle = '#ffffff';
+      c.font = '900 24px "Syne", sans-serif';
+      c.textAlign = 'right';
+      c.fillText('GARDA', V_WIDTH - 40, 48);
+      c.fillStyle = '#f59e0b';
+      c.font = '700 13px "Rajdhani", sans-serif';
+      c.fillText('SÍOCHÁNA', V_WIDTH - 145, 46);
+
+      // P2 EX Meter
+      c.textAlign = 'left';
+      c.fillStyle = 'rgba(15, 23, 42, 0.85)';
+      c.fillRect(V_WIDTH - 40 - 200, 96, 200, 10);
+      c.fillStyle = '#f59e0b';
+      c.fillRect(V_WIDTH - 40 - ((p2.energy / 100) * 200), 96, (p2.energy / 100) * 200, 10);
+
+      // Center Timer Box
+      c.fillStyle = 'rgba(15, 23, 42, 0.95)';
+      c.beginPath();
+      c.moveTo(V_WIDTH / 2 - 50, 42);
+      c.lineTo(V_WIDTH / 2 + 50, 42);
+      c.lineTo(V_WIDTH / 2 + 36, 105);
+      c.lineTo(V_WIDTH / 2 - 36, 105);
+      c.closePath();
+      c.fill();
+      c.strokeStyle = 'rgba(251, 191, 36, 0.9)';
+      c.lineWidth = 2.5;
+      c.stroke();
+
+      c.fillStyle = '#ffffff';
+      c.font = '900 44px "Syne", sans-serif';
+      c.textAlign = 'center';
+      c.fillText(Math.ceil(time).toString().padStart(2, '0'), V_WIDTH / 2, 90);
+      c.textAlign = 'left';
+
+      c.restore();
+    }
+
+    /* =================================================================
+       GAME LOOP & EVENT HANDLING
+       ================================================================= */
+    let currentRound = 1;
+    const maxRounds = 3;
+    let p1Wins = 0;
+    let p2Wins = 0;
+    let roundTimer = 60;
+    let gameState = 'START';
+    let stateClock = 0;
+
+    const player = new UE5Fighter(true, 'Maria', 320);
+    const cpu = new UE5Fighter(false, 'Garda', 760);
+
+    const announceMain = document.getElementById('announce-main');
+    const announceSub = document.getElementById('announce-sub');
+    const roundIndicator = document.getElementById('round-indicator');
+    const introStartScreen = document.getElementById('intro-start-screen');
+    const btnStartGame = document.getElementById('btn-start-game');
+    const bgmToggleBtn = document.getElementById('bgm-toggle-btn');
+
+    let isGameStarted = false;
+
+    function dismissIntroAndPlay() {
+      if (isGameStarted) return;
+      isGameStarted = true;
+      audio.init();
+      audio.startBGM();
+
+      if (introStartScreen) {
+        introStartScreen.style.opacity = '0';
+        introStartScreen.style.pointerEvents = 'none';
+        setTimeout(() => {
+          introStartScreen.style.display = 'none';
+        }, 500);
+      }
+      startNewRound();
+    }
+
+    if (btnStartGame) {
+      btnStartGame.addEventListener('click', dismissIntroAndPlay);
+    }
+    if (introStartScreen) {
+      introStartScreen.addEventListener('click', (e) => {
+        // Dismiss if user taps anywhere on intro screen
+        dismissIntroAndPlay();
+      });
+    }
+
+    if (bgmToggleBtn) {
+      bgmToggleBtn.addEventListener('click', () => {
+        audio.init();
+        if (!audio.musicPlaying) audio.startBGM();
+        const isPlaying = audio.toggleMusic();
+        bgmToggleBtn.textContent = isPlaying ? '🎵' : '🔇';
+        bgmToggleBtn.classList.toggle('text-amber-400', isPlaying);
+        bgmToggleBtn.classList.toggle('text-slate-500', !isPlaying);
+      });
+    }
+
+    function setAnnouncement(mainText, subText, visible = true) {
+      announceMain.textContent = mainText;
+      announceSub.textContent = subText;
+      announceMain.style.opacity = visible ? '1' : '0';
+      announceSub.style.opacity = visible ? '1' : '0';
+    }
+
+    function startNewRound() {
+      roundIndicator.textContent = `RND ${currentRound}/${maxRounds}`;
+      player.reset(320);
+      cpu.reset(760);
+      energyProjectiles.length = 0;
+      roundTimer = 60;
+      gameState = 'INTRO';
+      stateClock = 90;
+      audio.playRoundChime();
+      setAnnouncement(`ROUND ${currentRound}`, 'ENGAGE!');
+    }
+
+    const keys = {};
+
+    function handleAction(action) {
+      audio.init();
+      if (!isGameStarted) {
+        dismissIntroAndPlay();
+        return;
+      }
+      if (gameState !== 'FIGHT') return;
+
+      if (action === 'punch') {
+        if (player.state === 'idle' || player.state === 'walk') {
+          player.state = 'punch';
+          player.stateTimer = 18;
+          player.attackHitDone = false;
+          audio.playHitImpact(false);
+          triggerHaptic('light');
+        }
+      } else if (action === 'kick') {
+        if (player.state === 'idle' || player.state === 'walk') {
+          player.state = 'kick';
+          player.stateTimer = 24;
+          player.attackHitDone = false;
+          audio.playHitImpact(true);
+          triggerHaptic('heavy');
+        }
+      } else if (action === 'special') {
+        player.triggerSpecial();
+      }
+    }
+
+    window.addEventListener('keydown', (e) => {
+      audio.init();
+      if (!isGameStarted && (e.key === 'Enter' || e.key === ' ')) {
+        dismissIntroAndPlay();
+        return;
+      }
+      const k = e.key.toLowerCase();
+      keys[k] = true;
+      if (k === 'j') handleAction('punch');
+      else if (k === 'k') handleAction('kick');
+      else if (k === 'l') handleAction('special');
+    });
+
+    window.addEventListener('keyup', (e) => {
+      keys[e.key.toLowerCase()] = false;
+    });
+
+    function setupBtn(id, downHandler, upHandler) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.addEventListener('pointerdown', (e) => {
+        e.preventDefault();
+        audio.init();
+        downHandler();
+      });
+      el.addEventListener('pointerup', (e) => {
+        e.preventDefault();
+        if (upHandler) upHandler();
+      });
+      el.addEventListener('pointerleave', (e) => {
+        if (upHandler) upHandler();
+      });
+    }
+
+    setupBtn('btn-left', () => keys['arrowleft'] = true, () => keys['arrowleft'] = false);
+    setupBtn('btn-right', () => keys['arrowright'] = true, () => keys['arrowright'] = false);
+    setupBtn('btn-up', () => keys['arrowup'] = true, () => keys['arrowup'] = false);
+    setupBtn('btn-down', () => keys['arrowdown'] = true, () => keys['arrowdown'] = false);
+    setupBtn('btn-punch', () => handleAction('punch'));
+    setupBtn('btn-kick', () => handleAction('kick'));
+    setupBtn('btn-special', () => handleAction('special'));
+
+    let lastTime = performance.now();
+
+    function gameLoop(now) {
+      const dt = Math.min((now - lastTime) / 1000, 0.1);
+      lastTime = now;
+
+      if (gameState === 'FIGHT') {
+        player.isBlocking = false;
+        if (keys['a'] || keys['arrowleft']) {
+          player.vx = -7.5;
+          if (player.isGrounded && player.state === 'idle') player.state = 'walk';
+        } else if (keys['d'] || keys['arrowright']) {
+          player.vx = 7.5;
+          if (player.isGrounded && player.state === 'idle') player.state = 'walk';
+        }
+
+        if ((keys['w'] || keys['arrowup']) && player.isGrounded) {
+          player.vy = -26; // High jump for vertical frame
+          player.state = 'jump';
+        }
+
+        if (keys['s'] || keys['arrowdown']) {
+          if (player.isGrounded) {
+            player.state = 'crouch';
+            player.isBlocking = true;
+          }
+        }
+      }
+
+      if (gameState === 'INTRO') {
+        stateClock--;
+        if (stateClock <= 0) {
+          setAnnouncement('', '', false);
+          gameState = 'FIGHT';
+        }
+      } else if (gameState === 'FIGHT') {
+        roundTimer -= dt;
+        if (roundTimer <= 0 || player.hp <= 0 || cpu.hp <= 0) {
+          gameState = 'ROUND_OVER';
+          stateClock = 120;
+          triggerShake(20);
+
+          let winner = '';
+          if (player.hp > cpu.hp) {
+            p1Wins++;
+            winner = 'MARIA WINS THE ROUND!';
+          } else if (cpu.hp > player.hp) {
+            p2Wins++;
+            winner = 'GARDA KELLY WINS THE ROUND!';
+          } else {
+            winner = 'ROUND DRAW!';
+          }
+          setAnnouncement('K.O.', winner);
+        }
+      } else if (gameState === 'ROUND_OVER') {
+        stateClock--;
+        if (stateClock <= 0) {
+          if (p1Wins >= 2 || p2Wins >= 2 || currentRound >= maxRounds) {
+            gameState = 'MATCH_OVER';
+            stateClock = 180;
+            const victor = p1Wins > p2Wins ? 'MARIA CLAIMS DUBLIN!' : 'GARDA KELLY RESTORES ORDER!';
+            setAnnouncement('VICTORY', victor);
+          } else {
+            currentRound++;
+            startNewRound();
+          }
+        }
+      } else if (gameState === 'MATCH_OVER') {
+        stateClock--;
+        if (stateClock <= 0) {
+          currentRound = 1;
+          p1Wins = 0;
+          p2Wins = 0;
+          startNewRound();
+        }
+      }
+
+      player.update(cpu);
+      cpu.update(player);
+
+      for (let i = energyProjectiles.length - 1; i >= 0; i--) {
+        const p = energyProjectiles[i];
+        p.update();
+        const target = p.owner.isPlayer ? cpu : player;
+        const targetBody = { x: target.x - 55, y: target.y - target.height, w: 110, h: target.height };
+
+        if (
+          p.x < targetBody.x + targetBody.w &&
+          p.x + p.width > targetBody.x &&
+          p.y < targetBody.y + targetBody.h &&
+          p.y + p.height > targetBody.y
+        ) {
+          p.active = false;
+          target.receiveDamage(22, true);
+          addHitBurst(p.x, p.y, '#38bdf8', 35);
+        }
+
+        if (!p.active) energyProjectiles.splice(i, 1);
+      }
+
+      for (let i = hitSparks.length - 1; i >= 0; i--) {
+        const pt = hitSparks[i];
+        pt.x += pt.vx;
+        pt.y += pt.vy;
+        pt.alpha -= pt.decay;
+        if (pt.alpha <= 0) hitSparks.splice(i, 1);
+      }
+
+      // Maria's "HOISHT!" Comic Burst
+      for (let i = cinematicVocalShouts.length - 1; i >= 0; i--) {
+        const s = cinematicVocalShouts[i];
+        s.y -= 2.6;
+        s.alpha -= s.decay;
+        s.scale += (s.targetScale - s.scale) * 0.18;
+        if (s.alpha <= 0) cinematicVocalShouts.splice(i, 1);
+      }
+
+      let offsetX = 0;
+      let offsetY = 0;
+      if (cameraShake > 0) {
+        offsetX = (Math.random() - 0.5) * cameraShake;
+        offsetY = (Math.random() - 0.5) * cameraShake;
+        cameraShake *= 0.88;
+        if (cameraShake < 0.5) cameraShake = 0;
+      }
+
+      // Render Pipeline
+      ctx.save();
+      ctx.translate(offsetX, offsetY);
+      ctx.clearRect(0, 0, V_WIDTH, V_HEIGHT);
+
+      renderDublinArenaStage(ctx);
+      energyProjectiles.forEach(p => p.draw(ctx));
+      player.draw(ctx);
+      cpu.draw(ctx);
+
+      // Hit Sparks with Bloom
+      hitSparks.forEach(pt => {
+        ctx.fillStyle = pt.color;
+        ctx.globalAlpha = Math.max(0, pt.alpha);
+        ctx.shadowColor = pt.color;
+        ctx.shadowBlur = 14;
+        ctx.beginPath();
+        ctx.arc(pt.x, pt.y, pt.radius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+        ctx.globalAlpha = 1.0;
+      });
+
+      // Maria's "HOISHT!" Vocal Burst Shockwave
+      cinematicVocalShouts.forEach(s => {
+        ctx.save();
+        ctx.translate(s.x, s.y);
+        ctx.rotate(s.rotation);
+        ctx.scale(s.scale, s.scale);
+        ctx.globalAlpha = Math.max(0, s.alpha);
+
+        const glow = ctx.createRadialGradient(0, 0, 10, 0, 0, 110);
+        glow.addColorStop(0, 'rgba(244, 63, 94, 0.9)');
+        glow.addColorStop(0.5, 'rgba(245, 158, 11, 0.45)');
+        glow.addColorStop(1, 'rgba(0, 0, 0, 0)');
+        ctx.fillStyle = glow;
+        ctx.beginPath();
+        ctx.arc(0, 0, 110, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.shadowColor = '#f43f5e';
+        ctx.shadowBlur = 28;
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '900 48px "Syne", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(s.text, 0, 0);
+
+        ctx.strokeStyle = '#991b1b';
+        ctx.lineWidth = 3;
+        ctx.strokeText(s.text, 0, 0);
+        ctx.restore();
+      });
+
+      renderVerticalHUD(ctx, player, cpu, roundTimer);
+
+      ctx.restore();
+
+      requestAnimationFrame(gameLoop);
+    }
+
+    // Keep fighers in background ready, awaiting player to tap Start
+    requestAnimationFrame(gameLoop);
+
+    /* =================================================================
+       PROGRESSIVE WEB APP (PWA) INSTALL & SERVICE WORKER LOGIC
+       ================================================================= */
+    let deferredPrompt = null;
+    const installBtn = document.getElementById('pwa-install-btn');
+    const iosModal = document.getElementById('ios-guide-modal');
+    const iosClose = document.getElementById('ios-guide-close');
+
+    const isIos = () => /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
+    const isInStandalone = () => ('standalone' in window.navigator) && (window.navigator.standalone);
+
+    if (isInStandalone()) {
+      if (installBtn) installBtn.style.display = 'none';
+    }
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      if (installBtn) installBtn.classList.remove('hidden');
+    });
+
+    if (installBtn) {
+      installBtn.addEventListener('click', async () => {
+        audio.init();
+        if (deferredPrompt) {
+          deferredPrompt.prompt();
+          const { outcome } = await deferredPrompt.userChoice;
+          if (outcome === 'accepted') {
+            installBtn.style.display = 'none';
+          }
+          deferredPrompt = null;
+        } else if (isIos()) {
+          if (iosModal) iosModal.classList.remove('hidden');
+        } else {
+          setAnnouncement('INSTALL', 'Tap browser menu (⋮) -> "Install App"');
+          setTimeout(() => setAnnouncement('', '', false), 4000);
+        }
+      });
+    }
+
+    if (iosClose && iosModal) {
+      iosClose.addEventListener('click', () => {
+        iosModal.classList.add('hidden');
+      });
+    }
+
+    if ('serviceWorker' in navigator) {
+      const swCode = `
+        const CACHE_NAME = 'mariamania-v2';
+        self.addEventListener('install', (e) => {
+          self.skipWaiting();
+        });
+        self.addEventListener('activate', (e) => {
+          e.waitUntil(self.clients.claim());
+        });
+        self.addEventListener('fetch', (e) => {
+          e.respondWith(
+            fetch(e.request).catch(() => caches.match(e.request))
+          );
+        });
+      `;
+      const blob = new Blob([swCode], { type: 'application/javascript' });
+      const swUrl = URL.createObjectURL(blob);
+      navigator.serviceWorker.register(swUrl).catch((err) => {
+        console.warn('SW registration skipped:', err);
+      });
+    }
+  </script>
+</body>
+</html>
